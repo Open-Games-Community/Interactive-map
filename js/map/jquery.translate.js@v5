@@ -1,0 +1,3110 @@
+/**
+ * @file jquery.translate.js
+ * @brief jQuery plugin to translate text in the client side.
+ * @author Manuel Fernandes
+ * @site
+ * @version 0.9
+ * @license MIT license <http://www.opensource.org/licenses/MIT>
+ *
+ * translate.js is a jQuery plugin to translate text in the client side.
+ *
+ */
+
+var translations;
+var globalLang;
+
+jQuery(function($) {
+    $.fn.translate = function(options) {
+
+        var that = this; //a reference to ourselves
+
+        var settings = {
+            css: "trn",
+            lang: "pt"
+                /*,
+                      t: {
+                        "translate": {
+                          pt: "tradução",
+                          br: "tradução"
+                        }
+                      }*/
+        };
+        settings = $.extend(settings, options || {});
+        if (settings.css.lastIndexOf(".", 0) !== 0) //doesn't start with '.'
+            settings.css = "." + settings.css;
+
+        var t = settings.t;
+
+        //public methods
+        this.lang = function(l) {
+            if (l) {
+                settings.lang = l;
+                this.translate(settings); //translate everything
+            }
+
+            return settings.lang;
+        };
+
+
+        this.get = function(index) {
+            var res = index;
+
+            try {
+                res = t[index][settings.lang];
+            } catch (err) {
+                //not found, return index
+                return index;
+            }
+
+            if (res)
+                return res;
+            else
+                return index;
+        };
+
+        this.g = this.get;
+
+
+
+        //main
+        this.find(settings.css).each(function(i) {
+            var $this = $(this);
+
+            var trn_key = $this.attr("data-trn-key");
+            if (!trn_key) {
+                trn_key = $this.html();
+                $this.attr("data-trn-key", trn_key); //store key for next time
+            }
+
+            $this.html(that.get(trn_key));
+        });
+
+
+        return this;
+
+    };
+
+    $.urlParam = function(name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.search);
+
+        return (results !== null) ? results[1] || 0 : false;
+    }
+
+    var source_language = $.urlParam('source_lang');
+
+    if (source_language !== false) {
+        localStorage.setItem('language', source_language);
+    }
+
+    var storage_lang = localStorage.getItem('language');
+
+    var t = {
+        // HEADER AND HOMEPAGE
+        agree_to_rules: {
+            en: "You need to accept to the User Agreement.",
+            es: "Debe aceptar el Acuerdo de Usuario.",
+            pt: "Você precisa concordar com o Acordo do Usuário.",
+            ru: "Вам необходимо принять Пользовательское соглашение.",
+            gr: "Πρέπει να αποδεχτείτε τους Όρους Χρήσης."
+        },
+        notfound: {
+            en: "We couldn't find that :(",
+            es: "No pudimos encontrar eso :(",
+            pt: "Não conseguimos encontrar isso :(",
+            gr: "Δεν μπορέσαμε να το βρούμε αυτό :(",
+            ru: "Не смогли найти этого :(",
+        },
+        lang: {
+            en: "en",
+            es: "es",
+            pt: "pt",
+            ru: "ru"
+        },
+        episode_t: {
+            en: "Innadril Episode 1:",
+            es: "Innadril Episodio 1:",
+            pt: "Innadril Episódio 1:",
+            ru: "Innadril Эпизод 1:"
+        },
+        episode_n: {
+            en: "The Awakening",
+            es: "El Despertar",
+            pt: "O Despertar",
+            ru: "Пробуждение"
+        },
+        episode_i: {
+            en: "Max level 58 - Epic Bosses Level 55",
+            es: "Máximo nivel 58 - Épicos nivel 55",
+            pt: "Nível máximo 58 - Epics level 55",
+            ru: "Ур. максимальный 58 - эпики Ур. 55"
+        },
+        home: {
+            en: "Home",
+            es: "Hogar",
+            pt: "Início",
+            ru: "Домой"
+        },
+        shop: {
+            en: "SHOP",
+            es: "TIENDA",
+            pt: "LOJA",
+            gr: "ΜΑΓΑΖΙ",
+            ru: "МАГАЗИН"
+        },
+        account: {
+            en: "ACCOUNT",
+            es: "CUENTA",
+            pt: "LOJA",
+            gr: "ACCOUNT",
+            ru: "ЛИЧНЫЙ КАБИНЕТ"
+        },
+        wiki: {
+            en: "WIKI",
+            es: "WIKI",
+            pt: "WIKI",
+            gr: "WIKI",
+            ru: "ВИКИПЕДИЯ"
+        },
+        forum: {
+            en: "FORUM",
+            es: "FORO",
+            pt: "FORUM",
+            gr: "FORUM",
+            ru: "Форум"
+        },
+        search: {
+            en: "Search the Wiki",
+            es: "Buscar en la Wiki",
+            pt: "Procure na Wiki",
+            gr: "Αναζήτηση στην Wiki",
+            ru: "Поиск в Википедии"
+        },
+        search_btn: {
+            en: "Search",
+            es: "Buscar",
+            pt: "Procure",
+            gr: "Αναζήτηση",
+            ru: "Поиск"
+        },
+        download: {
+            en: "DOWNLOAD",
+            es: "DESCARGAR",
+            pt: "DOWNLOAD",
+            gr: "DOWNLOAD",
+            ru: "СКАЧАТЬ"
+        },
+        event: {
+            en: "EVENT",
+            es: "EVENTO",
+            pt: "EVENTO",
+            gr: "EVENT",
+            ru: "СОБЫТИЯ"
+        },
+        news: {
+            en: "NEWS",
+            es: "NOTICIAS",
+            pt: "NOTÍCIAS",
+            gr: "ΝΕΑ",
+            ru: "НОВОСТИ"
+        },
+        update: {
+            en: "UPDATE",
+            es: "ACTUALIZACIÓN",
+            pt: "ATUALIZAÇÃO",
+            gr: "UPDATE",
+            ru: "ОБНОВИТЬ"
+        },
+        newstitle_010121: {
+            en: "Skill Changes",
+            es: "Cambios de Skill",
+            pt: "Mudanças nas Habilidades",
+            gr: "Αλλαγές στα Skills",
+            ru: "Изменения Cкиллов"
+        },
+        newscontent_010121: {
+            en: "We are excited to announce the changes we have made to skills based on the feedback from our last server! We will maintain our Enchanter System, the 7-man party limit and all the skills will remain like on the previous server. However, we decided to adapt and change the skills listed below based on our Stage system in order to make every class interesting to play at every stage.",
+            es: "Estamos felices de anunciar los cambios en skills basados en las reacciones generadas en nuestro último servidor. Mantendremos el sistema de Enchanters y las parties con límite de 7 personajes, y todas las skills se mantendrán como en el servidor anterior. Pero hemos decidido adaptar y cambiar ciertas skills enlistadas debajo, basándonos en nuestro sistema de Stages, para hacer que cada clase sea interesante de jugar en cada Stage.",
+            pt: "Temos o prazer de anunciar as mudanças que fizemos nas habilidades com base no feedback do nosso último servidor! Manteremos o nosso Sistema de Enchanter, o limite de players em party será 7 e todas as habilidades permanecerão como no servidor anterior. Porém, decidimos adaptar e alterar as habilidades listadas abaixo com base em nosso sistema de estágios, para tornar cada classe interessante de se jogar em cada fase.",
+            gr: "Είμαστε ενθουσιασμένοι να ανακοινώσουμε τις αλλαγές που έχουμε κάνει στα skills βάσει του feedback από τον τελευταίο μας server! Θα κρατήσουμε το Enchanter System, το όριο 7 παικτών στο party και όλα τα άλλα skills θα παραμείνουν όπως στον προηγούμενο server. Όμως, αποφασίσαμε να προσαρμόσουμε και να αλλάξουμε τα παρακάτω skills βάσει του Stage system για να κάνουμε το κάθε class ενδιαφέρον στο να το παίξει κανείς σε όλα τα stages.​",
+            ru: "Мы с удовольствием сообщаем об изменениях в скиллах, которые мы сделали на основе ваших отзывов с нашего последнего сервера! Мы сохраним нашу систему Чародеев, лимит в 7 человек для пати и все скиллы останутся прежними как на предыдущем сервере. Однако, мы решили скорректировать и изменить скиллы, которые будут представлены ниже, чтобы сделать каждый класс интересным на всех стадиях игры. Некоторые из скиллов, что Вы ранее учили на более поздних этапах игры, будут разделены на 3 стадии и будут добавлены на ранних этапах игры."
+        },
+        newstitle_020221: {
+            en: "Community Talk Show & GvG Event",
+            es: "Community Talk Show & GvG Event",
+            pt: "Community Talk Show & GvG Event",
+            gr: "Community Talk Show & GvG Event",
+            ru: "Community Talk Show & GvG Event",
+        },
+        newscontent_020221: {
+            en: "On Friday, February 12th we will be showcasing our adjustments to skill balance and mechanics live on our Twitch channel! We will also be hosting a GvG event where players will be able to test the new skills and their animations along with their influence on overall balance. Furthermore, the new 'Clan Stronghold' system will also be featured! If you are interested in joining this event, you will need to form a group consisting of seven members. As soon as you have gathered your friends, please contact a member of the staff and you will be provided with a set of instructions. The GvG event will be governed by the following set of rule: - Max level: 56 - Max equipment grade: C-Grade - No epic jewelry - No talismans of any type The event will commence at 20:00 GMT+0. Participants need to be online 30 minutes prior to the event.",
+            es: "El viernes 12 de febrero, estaremos haciendo una demostración de nuestros ajustes al balance de skills y mecánicas, ¡en un directo a través de nuestro canal de Twitch! Además, estaremos organizando un evento GvG donde los jugadores podrán probar las nuevas skills y sus animaciones, así como su influencia en el balance general. Además, ¡también se incluirá el nuevo sistema de 'Clan Stronghold'! Si estás interesando en unirte a este evento, deberás formar un grupo formado por 7 miembros. Tan pronto como hayas reunido a tus amigos, comunícate con un miembro del staff y se te proporcionará un conjunto de instrucciones. El evento GvG se regirá por el siguiente conjunto de reglas: - Máximo nivel: 56 - Máximo grado de equipamiento: Grado C - No joyería épica - No talismanes de cualquier tipo El evento comenzará a las 20:00 GMT+0 Los participantes deben estar conectados 30 minutos antes del evento.",
+            pt: "No dia 12 de fevereiro, sexta-feira, nós estaremos mostrando nossas alterações ao client do jogo em prol do balanceamento de skills e mecânicas em nosso canal da Twitch! Também estaremos realizando um evento GvG(Guilda versus Guilda) para que seja possível os jogadores testarem na prática as novas skills e animações, além do impacto dessas mudanças no balanceamento geral do jogo. Além disso, o novo sistema de \"Clan Stronghold\" também será demonstrado! Se você está interessado em entrar nesse evento, você deverá criar um grupo de sete pessoas. Assim que você tiver juntado todos os seus amigos, por favor entre em contato com um membro da equipe e você receberá algumas instruções sobre como proceder. O evento GvG terá algumas regras específicas: - Nível máximo: 56; - Grade máximo de equipamentos: C-Grade; - Sem jóias épicas; - Sem talismãs, de qualquer tipo. O evento começará às 20:00, no fuso horário do GMT +0 (Greenwich Mean Time). Todos os participantes precisam estar online trinta minutos antes do evento começar.",
+            gr: "Την Παρασκευή, 12 Φεβρουαρίου θα σας παρουσιάσουμε τις αλλαγές που πραγματοποιήσαμε στo skill balance καθώς και στα mechanics του παιχνιδιού ζωντάνα στο κανάλι μας στο Twitch! Θα «τρέξουμε» επίσης ένα GvG event όπου οι παίκτες θα μπορούν να δοκιμάσουν τα καινούργια skills και τα animations τους καθώς και την επιρροή τους στο γενικό balance. Επιπλέον, θα παρουσιάσουμε και το καινούριο σύστημα  «Clan Stronghold»! Εάν ενδιαφέρεστε να συμμετάσχετε σε αυτό το event, θα χρειαστεί να φτιάξετε ένα group από επτά μέλη. Μόλις μαζέψετε τους φίλους σας, παρακαλούμε επικοινωνήστε με ένα μέλος του προσωπικού για να λάβετε οδηγίες. Το GvG event υπόκειται στους εξής κανόνες: - Μέγιστο level: 56 - Μέγιστο equipment grade: C-Grade - Απαγορεύονται τα epic κοσμήματα - Απαγορεύονται τα talismans οποιουδήποτε τύπου Το event θα ξεκινήσει στις 22:00 ώρα Ελλάδος. Οι συμμετέχοντες πρέπει να είναι online 30 λεπτά πρίν την έναρξη του event.",
+            ru: "В пятницу, 12 февраля, мы в прямом эфире на нашем канале Twitch представим наши изменения в балансе навыков и механике! Мы также проведем турнир GvG, где игроки смогут проверить новые навыки и их анимацию, а также их влияние на общий баланс. Кроме того, будет представлена   новая система «Крепость клана»! Если вы заинтересованы в участии в этом мероприятии, вам нужно будет сформировать группу из семи человек. Как только вы соберете своих друзей, свяжитесь с одним из сотрудников в дискорде, и вам будут предоставлены инструкции. GvG будет регулироваться следующим набором правил: - Максимальный уровень: 56 - Максимальный уровень снаряжения: C-Grade - Запрещен эпик - Запрещены любые виды талисманов Турнир начнется в 20:00 GMT + 0. Участникам необходимо быть онлайн за 30 минут до турнира."
+        },
+        newstitle_170221: {
+            en: "Open BETA - 19/02/2021 18:00 GMT+0",
+            es: "Open BETA - 19/02/2021 19:00 GMT+1",
+            pt: "Open BETA - 19/02/2021 15:00 GMT-3",
+            gr: "Open BETA - 19/02/2021 20:00 GMT+2",
+            ru: "ОБТ - 19/02/2021 21:00 GMT+3",
+        },
+        newscontent_170221: {
+            en: "We are thrilled to announce that the Open BETA phase of our 'Improved' project will be launched on Friday, February 19th at 18:00 GMT+0! The Open BETA will have the same configuration as the live server - Stage 1. You may find out more about the server's settings on our Wiki. The full client can be downloaded here. A download link for the system folder will become available on the day of the Open BETA. You will also need to create an account via our Account Panel.",
+            es: "Estamos ansiosos de anunciarles que la fase de BETA Abierta de nuestro proyecto 'Improved', será lanzada el Viernes 19 de Febrero a las 19:00 GMT+1! La BETA Abierta tendrá la misma configuración que el servidor live - Etapa 1. Puedes obtener más información sobre los ajustes del servidor en nuestra Wiki. El cliente completo puede ser descargado aquí. Un link de descarga de la carpeta System estará disponible en el día de inicio de la BETA Abierta. Además necesitarás crear una cuenta a través de nuestro Panel de Cuenta. A fin de preparar la Gran Apertura, la BETA Abierta finalizará el 25 de Febrero.",
+            pt: "Temos o prazer de anunciar que a fase Open BETA do nosso projeto 'Improved' será lançada na próxima sexta-feira, 19 de fevereiro às 15:00 GMT-3! O Open BETA terá a mesma configuração do servidor live - Etapa 1. Você pode descobrir mais sobre as configurações do servidor em nosso Wiki. O cliente completo pode ser baixado aqui. O link para download da system estará disponível no dia do Open BETA. Você também precisará criar uma conta através do nosso Painel de Controle. Em preparação para a Grande Inauguração, o Open BETA terminará em 25 de fevereiro.",
+            gr: "Με μεγάλη μας χαρά ανακοινώνουμε την έναρξη της φάσης Open BETA του «Improved» project μας την Παρασκευή, 19 Φεβρουαρίου στις 20:00 ώρα Ελλάδος! Το Open BETA θα έχει τις ίδιες ρυθμίσεις με αυτές που θα έχει ο live server, δηλαδή του «Stage 1». Μπορείτε να μάθετε περισσότερα για τις ρυθμίσεις του server στην Wiki μας. Το full client μπορείτε να το κατεβάσετε από εδώ. Το link για να κατεβάσετε το φάκελο system θα είναι διαθέσιμο την ημέρα του Open BETA. Θα χρειαστεί επίσης να δημιουργήσετε ένα account μέσω του Account Panel. Το Open BETA θα κλείσει στις 25 Φεβρουαρίου καθώς θα προετοιμαζόμαστε για το Grand Opening.",
+            ru: "Мы рады сообщить, что OBT \"Improved\" начнется в пятницу, 19 февраля, в 21:00 GMT+3! OBT будет иметь ту же конфигурацию, что и живой сервер - первой стадии. Вы можете узнать больше о настройках сервера в нашей Wiki. Полную версию клиента можно скачать здесь. Ссылка для загрузки патча, будет доступна в день открытия ОБТ. Вам также необходимо будет создать учетную запись через нашу панель учетной записи. ОБТ будет закрыт перед открытием, 25 февраля."
+        },
+        newstitle_250221: {
+            en: "Grand Opening - 26/02/2021 18:00 GMT+0",
+            es: "Grand Opening - 26/02/2021 18:00 GMT+0",
+            pt: "Grand Opening - 26/02/2021 18:00 GMT+0",
+            gr: "Grand Opening - 26/02/2021 18:00 GMT+0",
+            ru: "Grand Opening - 26/02/2021 18:00 GMT+0",
+        },
+        newscontent_250221: {
+            en: "We are nearly there! Just one more day left until the Improved era commences! Our Improved project will go live on: Friday, February 26th at 18:00 GMT+0!",
+            es: "Ya casi estamos! Solo un día más para que la era Improved comience! Nuestro proyecto Improved será lanzado el día:​ Viernes, 26 de Febrero, a las 18:00 GMT+0! (15:00 GMT-3)",
+            pt: "Estamos quase lá! Só falta mais um dia para o início da era Improved! Nosso projeto será lançado em: Sexta-feira, Dia 26 de Fevereiro às 18:00 GMT (15:00 Horário de Brasília)",
+            gr: "Ήρθε σχεδόν η ώρα! Άλλη μία μέρα ακόμα μέχρι την «Improved» εποχή! Το «Improved» project μας θα ανοίξει: Παρασκευή, 26 Φεβρουαρίου στις 20:00 ώρα Ελλάδος!​",
+            en: "We are nearly there! Just one more day left until the Improved era commences! Our Improved project will go live on: Friday, February 26th at 18:00 GMT+0!"
+        },
+        newstitle_100321: {
+            en: "Alioth's Flaming Rampage 10/03/21 - 15/03/21",
+            es: "Alioth's Flaming Rampage 10/03/21 - 15/03/21",
+            pt: "Alioth's Flaming Rampage 10/03/21 - 15/03/21",
+            gr: "Alioth's Flaming Rampage 10/03/21 - 15/03/21",
+            ru: "Alioth's Flaming Rampage 10/03/21 - 15/03/21"
+        },
+        newscontent_100321: {
+            en: "Alioth wreaked havoc on hundreds of OVH servers. None of them have been able to recover from his flaming rampage. That is of course, except for Innadril's Improved x1!",
+            es: "Alioth wreaked havoc on hundreds of OVH servers. None of them have been able to recover from his flaming rampage. That is of course, except for Innadril's Improved x1!",
+            pt: "Alioth wreaked havoc on hundreds of OVH servers. None of them have been able to recover from his flaming rampage. That is of course, except for Innadril's Improved x1!",
+            gr: "Alioth wreaked havoc on hundreds of OVH servers. None of them have been able to recover from his flaming rampage. That is of course, except for Innadril's Improved x1!",
+            ru: "Alioth wreaked havoc on hundreds of OVH servers. None of them have been able to recover from his flaming rampage. That is of course, except for Innadril's Improved x1!"
+        },
+        newstitle_220321: {
+            en: "Stage 2 - March 22, 2021 18:00 GMT+0",
+            es: "Stage 2 - March 22, 2021 18:00 GMT+0",
+            pt: "Stage 2 - March 22, 2021 18:00 GMT+0",
+            gr: "Stage 2 - March 22, 2021 18:00 GMT+0",
+            ru: "Stage 2 - March 22, 2021 18:00 GMT+0"
+        },
+        newscontent_220321: {
+            en: "Hello everyone! We are thrilled to announce that Stage 2 will go live today, March 22nd at 18:00 GMT+0! The server will be brought down for maintenance at 17:00 GMT+0. Quick Stage 2 feature overview: New area: Rune...",
+            es: "Hello everyone! We are thrilled to announce that Stage 2 will go live today, March 22nd at 18:00 GMT+0! The server will be brought down for maintenance at 17:00 GMT+0. Quick Stage 2 feature overview: New area: Rune...",
+            pt: "Hello everyone! We are thrilled to announce that Stage 2 will go live today, March 22nd at 18:00 GMT+0! The server will be brought down for maintenance at 17:00 GMT+0. Quick Stage 2 feature overview: New area: Rune...",
+            gr: "Hello everyone! We are thrilled to announce that Stage 2 will go live today, March 22nd at 18:00 GMT+0! The server will be brought down for maintenance at 17:00 GMT+0. Quick Stage 2 feature overview: New area: Rune...",
+            ru: "Hello everyone! We are thrilled to announce that Stage 2 will go live today, March 22nd at 18:00 GMT+0! The server will be brought down for maintenance at 17:00 GMT+0. Quick Stage 2 feature overview: New area: Rune..."
+        },
+        newstitle_250321: {
+            en: "Newcomer Bonuses",
+            es: "Newcomer Bonuses",
+            pt: "Newcomer Bonuses",
+            gr: "Newcomer Bonuses",
+            ru: "Newcomer Bonuses"
+        },
+        newscontent_250321: {
+            en: "New to Innadril? Looking for a fresh Lineage II experience but you're afraid of starting on an server that has been running for some time now? Fear no more! Starting today, all newly created characters receive...",
+            es: "New to Innadril? Looking for a fresh Lineage II experience but you're afraid of starting on an server that has been running for some time now? Fear no more! Starting today, all newly created characters receive...",
+            pt: "New to Innadril? Looking for a fresh Lineage II experience but you're afraid of starting on an server that has been running for some time now? Fear no more! Starting today, all newly created characters receive...",
+            gr: "New to Innadril? Looking for a fresh Lineage II experience but you're afraid of starting on an server that has been running for some time now? Fear no more! Starting today, all newly created characters receive...",
+            ru: "New to Innadril? Looking for a fresh Lineage II experience but you're afraid of starting on an server that has been running for some time now? Fear no more! Starting today, all newly created characters receive..."
+        },
+        newstitle_020421: {
+            en: "Power of Love - 03/04/21 - 12/04/21",
+            es: "Power of Love - 03/04/21 - 12/04/21",
+            pt: "Power of Love - 03/04/21 - 12/04/21",
+            gr: "Power of Love - 03/04/21 - 12/04/21",
+            ru: "Power of Love - 03/04/21 - 12/04/21",
+        },
+        newscontent_020421: {
+            en: "Given the abundance of love that is present in the Spring season, Coco Brownie has arrived in town to share her sweet treats, but it looks like she also needs some rescuing...",
+            es: "Given the abundance of love that is present in the Spring season, Coco Brownie has arrived in town to share her sweet treats, but it looks like she also needs some rescuing...",
+            pt: "Given the abundance of love that is present in the Spring season, Coco Brownie has arrived in town to share her sweet treats, but it looks like she also needs some rescuing...",
+            gr: "Given the abundance of love that is present in the Spring season, Coco Brownie has arrived in town to share her sweet treats, but it looks like she also needs some rescuing...",
+            ru: "Given the abundance of love that is present in the Spring season, Coco Brownie has arrived in town to share her sweet treats, but it looks like she also needs some rescuing..."
+        },
+        newstitle: {
+            en: "Letter Collector - 26/04/21 - 03/05/21",
+            es: "Letter Collector - 26/04/21 - 03/05/21",
+            pt: "Letter Collector - 26/04/21 - 03/05/21",
+            gr: "Letter Collector - 26/04/21 - 03/05/21",
+            ru: "Letter Collector - 26/04/21 - 03/05/21",
+        },
+        newscontent: {
+            en: "Time to get your letter collecting groove back on! Ramp up your monster hunting and collect letters from them when they drop. Turn them in for rewards to help you along on your adventures in Aden.",
+            es: "Time to get your letter collecting groove back on! Ramp up your monster hunting and collect letters from them when they drop. Turn them in for rewards to help you along on your adventures in Aden.",
+            pt: "Time to get your letter collecting groove back on! Ramp up your monster hunting and collect letters from them when they drop. Turn them in for rewards to help you along on your adventures in Aden.",
+            gr: "Time to get your letter collecting groove back on! Ramp up your monster hunting and collect letters from them when they drop. Turn them in for rewards to help you along on your adventures in Aden.",
+            ru: "Time to get your letter collecting groove back on! Ramp up your monster hunting and collect letters from them when they drop. Turn them in for rewards to help you along on your adventures in Aden."
+        },
+        essencenewstitle: {
+            en: "Essence - Coming May 21st",
+            es: "Essence - Coming May 21st",
+            pt: "Essence - Coming May 21st",
+            gr: "Essence - Coming May 21st",
+            ru: "Essence - Coming May 21st"
+        },
+        essencenewscontent: {
+            en: "Greetings everyone! We are thrilled to announce that Innadril's rendition of the Essence version of the game will go live on May 21st, 2021! Prior to the opening, we will be holding an Open BETA phase from May 14th, 2021. We hope you are as excited as we are!",
+            es: "Greetings everyone! We are thrilled to announce that Innadril's rendition of the Essence version of the game will go live on May 21st, 2021! Prior to the opening, we will be holding an Open BETA phase from May 14th, 2021. We hope you are as excited as we are!",
+            pt: "Greetings everyone! We are thrilled to announce that Innadril's rendition of the Essence version of the game will go live on May 21st, 2021! Prior to the opening, we will be holding an Open BETA phase from May 14th, 2021. We hope you are as excited as we are!",
+            gr: "Greetings everyone! We are thrilled to announce that Innadril's rendition of the Essence version of the game will go live on May 21st, 2021! Prior to the opening, we will be holding an Open BETA phase from May 14th, 2021. We hope you are as excited as we are!",
+            ru: "Greetings everyone! We are thrilled to announce that Innadril's rendition of the Essence version of the game will go live on May 21st, 2021! Prior to the opening, we will be holding an Open BETA phase from May 14th, 2021. We hope you are as excited as we are!"
+        },
+        lasttopic: {
+            en: "Latest <span>Forum Topics</span>",
+            es: "Últimos <span>Temas del Foro</span>",
+            pt: "Últimos <span>Tópicos</span>",
+            gr: "Τελευταίες <span>Δημοσιεύσεις</span>",
+            ru: "Последние <span>Tемы</span>"
+        },
+        register: {
+            en: "Create an <span>Account</span>",
+            es: "Registrar una <span>Cuenta</span>",
+            pt: "Registre <span>sua Conta</span>",
+            gr: "Δημιουργία <span>Account</span>",
+            ru: "Регистрация <span>Аккаунта</span>"
+        },
+        select: {
+            en: "Select Server",
+            es: "Seleccionar Servidor",
+            pt: "Selecione o server",
+            gr: "Επιλέξτε  Server",
+            ru: "Выбрать сервер"
+        },
+        login: {
+            en: "Account ID",
+            es: "Nombre de Usuario",
+            pt: "Usuário",
+            gr: "Account ID",
+            ru: "Логин"
+        },
+        email: {
+            en: "E-mail",
+            es: "Correo Electrónico",
+            pt: "E-mail",
+            gr: "E-mail",
+            ru: "Эл. почта"
+        },
+        password: {
+            en: "Password",
+            es: "Contraseña",
+            pt: "Senha",
+            gr: "Password",
+            ru: "Пароль"
+        },
+        discord: {
+            en: "Discord",
+            es: "Discord",
+            pt: "Discord",
+            gr: "Discord",
+            ru: "Discord"
+        },
+        telegram: {
+            en: "SHOP",
+            es: "TIENDA",
+            pt: "LOJA",
+            gr: "ΜΑΓΑΖΙ",
+            ru: "МАГАЗИН"
+        },
+        facebook: {
+            en: "SHOP",
+            es: "TIENDA",
+            pt: "LOJA",
+            gr: "ΜΑΓΑΖΙ",
+            ru: "МАГАЗИН"
+        },
+        youtube: {
+            en: "SHOP",
+            es: "TIENDA",
+            pt: "LOJA",
+            gr: "ΜΑΓΑΖΙ",
+            ru: "МАГАЗИН"
+        },
+        wikigeneral: {
+            en: "SHOP",
+            es: "TIENDA",
+            pt: "LOJA",
+            gr: "ΜΑΓΑΖΙ",
+            ru: "МАГАЗИН"
+        },
+        confirm: {
+            en: "I confirm that I have read and accept the <a href=\"/privacy/en/\">User Agreement</a> and that I will adhere to it!",
+            es: "Confirmo que he leído y acepto el <a href=\"/privacy/es/\">Acuerdo de Usario</a>, y también me comprometo a seguirlas!",
+            pt: "Eu confirmo que li e aceito <a href=\"/privacy/pt/\">as regras do projeto</a>, além de prometer seguí-las!",
+            gr: "Επιβεβαιώνω ότι έχω διαβάσει και αποδέχομαι τους <a href=\"/privacy/gr/\">Όρους Χρήσης</a> και ότι θα τους τηρήσω!",
+            ru: "Подтверждаю, что прочитал и принимаю <a href=\"/privacy/ru/\">Пользовательское Соглашение</a>, а также обязуюсь их соблюдать!"
+        },
+        modaltitle: {
+            en: "<span>Stage 2</span> in...",
+            es: "<span>Etapa 2</span> en...",
+            pt: "<span>Etapa 2</span> em...",
+            gr: "<span>Stage 2</span> σε...",
+            ru: "<span>Стадия 2</span> за..."
+        },
+        modalcontent: {
+            en: "...and receive the following items on launch day!",
+            es: "...y recibe los siguientes ítems el día del lanzamiento!",
+            pt: "...e receba esses itens no dia da abertura!",
+            gr: "..και αποκτήστε τα παρακάτω items την ημέρα του Grand Opening!",
+            ru: "...и получи следующие предметы в день открытия!"
+        },
+        modaltitle_wiki: {
+            en: "Browse our <span>Wiki</span>!",
+            es: "Explora nuestra <span>Wiki</span>!",
+            pt: "Dê uma olhada na nossa <span>Wiki</span>!",
+            gr: "Εξερευνήστε την <span>Wiki</span> μας!",
+            ru: "Полистайтн <span>Википедию</span>!"
+        },
+        modalcontent_wiki: {
+            en: "Looking for information on our version of the game? Then look no further!",
+            es: "Buscas informacion de nuestra version del juego? No busques mas!",
+            pt: "Procurando informações sobre a nossa versão do jogo? Então a sua procura acabou!",
+            gr: "Ψάχνετε πληροφορίες σχετικά με την έκδοση του παιχνιδιού μας; Μην ψάχνετε άλλο!",
+            ru: "В поисках информации про нашу версию игры? Нет ничего проще!"
+        },
+        modaltitle_new: {
+            en: "<span>New</span> to Innadril?",
+            es: "<span>Nuevo</span> en Innadril??",
+            pt: "<span>New</span> to Innadril?",
+            gr: "<span>Καινούργιοι</span> στο Innadril;",
+            ru: "<span>New</span> to Innadril?"
+        },
+        modalcontent_new: {
+            en: "Claim your newcomer bonuses!",
+            es: "Reclama tus Bonus de Novato!",
+            pt: "Obtenha seu bonus de iniciante!",
+            gr: "Διεκδικήστε τα newcomer bonuses!",
+            ru: "Claim your newcomer bonuses!"
+        },
+        registeraccount: {
+            en: "REGISTER ACCOUNT",
+            es: "REGISTRAR CUENTA",
+            pt: "Registrar conta",
+            gr: "ΔΗΜΙΟΥΡΓΙΑ ACCOUNT",
+            ru: "РЕГИСТРАЦИЯ АККАУНТА"
+        },
+        copy: {
+            en: "COPYRIGHT © 2019 - 2021 INNADRIL.COM",
+            es: "COPYRIGHT © 2019 - 2021 INNADRIL.COM",
+            pt: "COPYRIGHT © 2019 - 2021 INNADRIL.COM",
+            gr: "COPYRIGHT © 2019 - 2021 INNADRIL.COM",
+            ru: "АВТОРСКОЕ ПРАВО © 2019-2021 INNADRIL.COM"
+        },
+        theseservers: {
+            en: "These servers are an emulator of the Lineage 2 game. The use of the service is for informational purposes only. You can familiarize yourself with the original version of the game Lineage 2 on the official servers of NCSoft.",
+            es: "Estos servidores son un emulador del juego Lineage 2. El uso del servicio es solo para fines informativos. Puedes familiarizarte con la versión original del juego Lineage 2 en los servidores oficiales de NCSoft.",
+            pt: "Esses servidores são uma versão emulada de Lineage 2. O uso desse serviço possui um caráter informativo somente. Você poderá se familiarizar com a versão oficial do Lineage 2 nos servidores oficiais da NCSoft",
+            gr: "Αυτοί οι servers είναι εξομοιωτές του παιχνιδιού Lineage II. Η χρήση αυτής της υπηρεσίας γίνεται μόνο για εκπαιδευτικούς σκοπούς. Μπορείτε να εξοικειωθείτε με την γνήσια έκδοση του παιχνιδιού μέσω των επίσημων servers της NCSoft.",
+            ru: "Игровые сервера являются эмулятором игры Lineage 2. Использование сервиса исключительно в информационных целях. Вы можете ознакомиться с оригинальной версией игры Lineage 2 на официальных серверах NCSoft."
+        },
+        privacity: {
+            en: "Privacy Policy",
+            es: "Política de Privacidad",
+            pt: "Política de Privacidade",
+            gr: "Πολιτική Απορρήτου",
+            ru: "Политика конфиденциальности"
+        },
+        partners: {
+            en: "Partners",
+            es: "Socios",
+            pt: "Parceiros",
+            gr: "Συνεργάτες",
+            ru: "Партнеры"
+        },
+        useragreement: {
+            en: "User Agreement",
+            es: "Acuerdo de Usuario",
+            pt: "User Agreement",
+            gr: "Σύμβαση Χρήσης",
+            ru: "Пользовательское Соглашение"
+        },
+        terms: {
+            en: "Terms and Conditions",
+            es: "Términos y Condiciones",
+            pt: "Termos do Usuário",
+            gr: "Όροι και Γνωστοποιήσεις",
+            ru: "Условия и Положения"
+        },
+        wikigeneral: {
+            en: "General",
+            es: "General",
+            pt: "Geral",
+            gr: "Γενικά",
+            ru: "Основное"
+        },
+        wikiskillandclasses: {
+            en: "Skills & Classes",
+            es: "Habilidades y Clases",
+            pt: "Habilidades e Classes",
+            gr: "Skills & Classes",
+            ru: "Умения и Классы"
+        },
+        global_skills: {
+            en: "Skills",
+            es: "Habilidades",
+            pt: "Habilidades",
+            gr: "Skills",
+            ru: "Умения"
+        },
+        global_classes: {
+            en: "Classes",
+            es: "Clases",
+            pt: "Classes",
+            gr: "Classes",
+            ru: "Классы"
+        },
+        wikigeneralinfo: {
+            en: "General Information",
+            es: "Informaciones Generales",
+            pt: "Informações Gerais",
+            gr: "Γενικές Πληροφορίες",
+            ru: "Основная Информация"
+        },
+        wikilocationandmonsters: {
+            en: "Locations & Monsters",
+            es: "Ubicaciones y Monstruos",
+            pt: "Locais e Monstros",
+            gr: "Τοποθεσίες & Τέρατα",
+            ru: "Локации и Монстры"
+        },
+        wikiitems: {
+            en: "Items",
+            es: "Items",
+            pt: "Itens",
+            gr: "Items",
+            ru: "Предметы"
+        },
+        wikiquests: {
+            en: "Quests",
+            es: "Misiones",
+            pt: "Missões",
+            gr: "Quests",
+            ru: "Квесты"
+        },
+        wikiquest: {
+            en: "Quest",
+            es: "Misión",
+            pt: "Missão",
+            gr: "Quest",
+            ru: "Квесты"
+        },
+        wikipetsystem: {
+            en: "Pet System",
+            es: "Sistema de Mascotas",
+            pt: "Sistema de Pet",
+            gr: "Σύστημα Pet",
+            ru: "Система питомцев"
+        },
+        wikibeautyshop: {
+            en: "Beauty Shop",
+            es: "Beauty Shop",
+            pt: "Beauty Shop",
+            gr: "Beauty Shop",
+            ru: "Салон красоты"
+        },
+        promo: {
+            en: "PROMO",
+            es: "PROMO",
+            pt: "PROMO",
+            gr: "PROMO",
+            ru: "ПРОМО"
+        },
+        wikigameplay: {
+            en: "Gameplay",
+            es: "Jugabilidad",
+            pt: "Jogabilidade",
+            gr: "Gameplay",
+            ru: "Геймплей"
+        },
+        wikisearchtext: {
+            en: "Search the Wiki",
+            es: "Buscar en la Wiki",
+            pt: "Procurar no wiki",
+            gr: "Αναζήτηση στην Wiki",
+            ru: "Поиск по Вики"
+        },
+        wikisearchtext2: {
+            en: "Enter a search term to search on the Wiki",
+            es: "Escribe lo que deseas encontrar en la Wiki",
+            pt: "Digite aqui o que você quer procurar no wiki",
+            gr: "Εισάγετε έναν όρο αναζήτησης",
+            ru: "Напишите что Вас интересует"
+        },
+        wikisubgeneralinfo: {
+            en: "General Information",
+            es: "Informaciones Generales",
+            pt: "Informações Gerais",
+            gr: "Γενικές Πληροφορίες",
+            ru: "Основная Информация"
+        },
+        wikiusefulcontent: {
+            en: "Useful Content",
+            es: "Contenido Útil",
+            pt: "Conteúdo Útil",
+            gr: "Χρήσιμο Περιεχόμενο",
+            ru: "Полезный Kонтент"
+        },
+        wikisubserverfeatures: {
+            en: "Server Features",
+            es: "Características del Servidor",
+            pt: "Recursos do servidor",
+            gr: "Features του Server",
+            ru: "Особенности сервера"
+        },
+        wikisubreworkedzone: {
+            en: "Reworked Zones",
+            es: "Zonas Reformuladas",
+            pt: "Zonas Modificadas",
+            gr: "Βελτιωμένα Zones",
+            ru: "Переработанные зоны"
+        },
+        wikisubchardev: {
+            en: "Character Development",
+            es: "Desarrollo del Personaje",
+            pt: "Desenvolvimento do personagem",
+            gr: "Ανάπτυξη Χαρακτήρα",
+            ru: "Развитие персонажа"
+        },
+        wikisubmarketplace: {
+            en: "Marketplace",
+            es: "Mercado",
+            pt: "Mercado",
+            gr: "Το Marketplace",
+            ru: "Торговая площадка"
+        },
+        wikisubkamalokas: {
+            en: "Kamaloka",
+            es: "Kamaloka",
+            pt: "Kamaloka",
+            gr: "Kamaloka",
+            ru: "Камалоки"
+        },
+        wikisubreworkedskill: {
+            en: "Reworked Skills",
+            es: "Habilidades Reformuladas",
+            pt: "Habilidades Modificadas",
+            gr: "Βελτιωμένα Skills",
+            ru: "Переработанные умения"
+        },
+        wikisubenchanter: {
+            en: "Enchanter System",
+            es: "Sistema de Enchanters",
+            pt: "Sistema de Enchanters",
+            gr: "Σύστημα Enchanter",
+            ru: "Чародеи"
+        },
+        wikisubskillbalance: {
+            en: "Skill Balance",
+            es: "Balance de Habilidades",
+            pt: "Balanceamento de Habilidades",
+            gr: "Skill Balance",
+            ru: "Баланс умений"
+        },
+        wikisubhowtoplay: {
+            en: "How to Play",
+            es: "Como Jugar",
+            pt: "Como Jogar",
+            gr: "Πώς να Παίξετε",
+            ru: "Как начать играть"
+        },
+        wikisubdownload: {
+            en: "Downloading the Client",
+            es: "Descargar archivos",
+            pt: "Baixar aquivos",
+            gr: "Οδηγίες Σύνδεσης",
+            ru: "Загрузка файлов"
+        },
+        wikisubconnect: {
+            en: "Connecting to the Game",
+            es: "Conectarse al juego",
+            pt: "Conectar no jogo",
+            gr: "Σύνδεση στο Παιχνίδι",
+            ru: "Подключение в игру"
+        },
+        wikisubbyrace: {
+            en: "Skills by Race",
+            es: "Habilidades por Raza",
+            pt: "Habilidades por Raça",
+            gr: "Skills ανά Race",
+            ru: "Умения расс"
+        },
+        human: {
+            en: "Human",
+            es: "Humano",
+            pt: "Humanos",
+            gr: "Human",
+            ru: "Люди"
+        },
+        elf: {
+            en: "Elf",
+            es: "Elfo",
+            pt: "Elfos",
+            gr: "Elf",
+            ru: "Эльфы",
+        },
+        darkelf: {
+            en: "Dark Elf",
+            es: "Elfo Oscuro",
+            pt: "Elfo Negro",
+            gr: "Dark Elf",
+            ru: "Темные Эльфы"
+        },
+        orc: {
+            en: "Orc",
+            es: "Orco",
+            pt: "Orc",
+            gr: "Orc",
+            ru: "Орк"
+        },
+        dwarf: {
+            en: "Dwarf",
+            es: "Enano",
+            pt: "Anão",
+            gr: "Dwarf",
+            ru: "Гном"
+        },
+        subenchanters: {
+            en: "Enchanters",
+            es: "Enchanters",
+            pt: "Enchanters",
+            gr: "Enchanters",
+            ru: "Чародеи "
+        },
+        bladedancer: {
+            en: "Bladedancer",
+            es: "Bladedancer",
+            pt: "Bladedancer",
+            gr: "Bladedancer",
+            ru: "Танцор смерти"
+        },
+        overlord: {
+            en: "Overlord",
+            es: "Overlord",
+            pt: "Overlord",
+            gr: "Overlord",
+            ru: "Верховный шаман"
+        },
+        prophet: {
+            en: "Prophet",
+            es: "Prophet",
+            pt: "Prophet",
+            gr: "Prophet",
+            ru: "Проповедник"
+        },
+        swordsinger: {
+            en: "Swordsinger",
+            es: "Swordsinger",
+            pt: "Swordsinger",
+            gr: "Swordsinger",
+            ru: "Менестрель"
+        },
+        warcryer: {
+            en: "Warcryer",
+            es: "Warcryer",
+            pt: "Warcryer",
+            gr: "Warcryer",
+            ru: "Вестник войны"
+        },
+        subhealers: {
+            en: "Healers",
+            es: "Sanadores",
+            pt: "Curandeiros",
+            gr: "Healers",
+            ru: "Целители"
+        },
+        bishop: {
+            en: "Bishop",
+            es: "Bishop",
+            pt: "Bishop",
+            gr: "Bishop",
+            ru: "Епископ"
+        },
+        elvenelder: {
+            en: "Elven Elder",
+            es: "Elven Elder",
+            pt: "Elven Elder",
+            gr: "Elven Elder",
+            ru: "Оракул Евы"
+        },
+        shillienelder: {
+            en: "Shillien Elder",
+            es: "Shillien Elder",
+            pt: "Shillien Elder",
+            gr: "Shillien Elder",
+            ru: "Мудрец Шилен"
+        },
+        submages: {
+            en: "Mages",
+            es: "Magos",
+            pt: "Magos",
+            gr: "Mages",
+            ru: "Маги"
+        },
+        necromancer: {
+            en: "Necromancer",
+            es: "Necromancer",
+            pt: "Necromancer",
+            gr: "Necromancer",
+            ru: "Некромант"
+        },
+        sorcerer: {
+            en: "Sorcerer",
+            es: "Sorcerer",
+            pt: "Sorcerer",
+            gr: "Sorcerer",
+            ru: "Властитель огня"
+        },
+        spellhowler: {
+            en: "Spellhowler",
+            es: "Spellhowler",
+            pt: "Spellhowler",
+            gr: "Spellhowler",
+            ru: "Заклинатель ветра"
+        },
+        spellsinger: {
+            en: "Spellsinger",
+            es: "Spellsinger",
+            pt: "Spellsinger",
+            gr: "Spellsinger",
+            ru: "Певец заклинаний"
+        },
+        summoners: {
+            en: "Summoners",
+            es: "Invocadores",
+            pt: "Invocadores",
+            gr: "Summoners",
+            ru: "Призыватели"
+        },
+        elementalsummoner: {
+            en: "Elemental Summoner",
+            es: "Elemental Summoner",
+            pt: "Elemental Summoner",
+            gr: "Elemental Summoner",
+            ru: "Последователь стихий"
+        },
+        phantomsummoner: {
+            en: "Phantom Summoner",
+            es: "Phantom Summoner",
+            pt: "Phantom Summoner",
+            gr: "Phantom Summoner",
+            ru: "Последователь тьмы"
+        },
+        warlock: {
+            en: "Warlock",
+            es: "Warlock",
+            pt: "Warlock",
+            gr: "Warlock",
+            ru: "Колдун"
+        },
+        warriors: {
+            en: "Warriors",
+            es: "Guerreros",
+            pt: "Guerreiros",
+            gr: "Warriors",
+            ru: "Воины"
+        },
+        bontyhunter: {
+            en: "Bounty Hunter",
+            es: "Bounty Hunter",
+            pt: "Bounty Hunter",
+            gr: "Bounty Hunter",
+            ru: "Собиратель"
+        },
+        destroyer: {
+            en: "Destroyer",
+            es: "Destroyer",
+            pt: "Destroyer",
+            gr: "Destroyer",
+            ru: "Разрушитель"
+        },
+        gladiator: {
+            en: "Gladiator",
+            es: "Gladiator",
+            pt: "Gladiator",
+            gr: "Gladiator",
+            ru: "Разрушитель"
+        },
+        tyrant: {
+            en: "Tyrant",
+            es: "Tyrant",
+            pt: "Tyrant",
+            gr: "Tyrant",
+            ru: "Отшельник"
+        },
+        warlord: {
+            en: "Warlord",
+            es: "Warlord",
+            pt: "Warlord",
+            gr: "Warlord",
+            ru: "Копейшик"
+        },
+        warsmith: {
+            en: "Warsmith",
+            es: "Warsmith",
+            pt: "Warsmith",
+            gr: "Warsmith",
+            ru: "Кузнец"
+        },
+        subtanks: {
+            en: "Tanks",
+            es: "Tanks",
+            pt: "Tanks",
+            gr: "Tanks",
+            ru: "Танки",
+        },
+        paladin: {
+            en: "Paladin",
+            es: "Paladin",
+            pt: "Paladin",
+            gr: "Paladin",
+            ru: "Паладин",
+        },
+        dark_avenger: {
+            en: "Dark Avenger",
+            es: "Dark Avenger",
+            pt: "Dark Avenger",
+            gr: "Dark Avenger",
+            ru: "Мститель",
+        },
+        temple_knight: {
+            en: "Temple Knight",
+            es: "Temple Knight",
+            pt: "Temple Knight",
+            gr: "Temple Knight",
+            ru: "Рыцарь Евы",
+        },
+        shillien_knight: {
+            en: "Shillien Knight",
+            es: "Shillien Knight",
+            pt: "Shillien Knight",
+            gr: "Shillien Knight",
+            ru: "Рыцарь Шилен",
+        },
+        subarchers: {
+            en: "Archers",
+            es: "Arqueros",
+            pt: "Arquieros",
+            gr: "Archers",
+            ru: "Лучники"
+        },
+        hawkeye: {
+            en: "Hawkeye",
+            es: "Hawkeye",
+            pt: "Hawkeye",
+            gr: "Hawkeye",
+            ru: "Стрелок"
+        },
+        dreadnought: {
+            en: "Dreadnought",
+            es: "Dreadnought",
+            pt: "Dreadnought",
+            gr: "Dreadnought",
+            ru: "Полководец"
+        },
+        duelist: {
+            en: "Duelist",
+            es: "Duelist",
+            pt: "Duelist",
+            gr: "Duelist",
+            ru: "Дуэлист"
+        },
+        phoenix_knight: {
+            en: "Phoenix Knight",
+            es: "Phoenix Knight",
+            pt: "Phoenix Knight",
+            gr: "Phoenix Knight",
+            ru: "Рыцарь Феникса	"
+        },
+        hell_knight: {
+            en: "Hell Knight",
+            es: "Hell Knight",
+            pt: "Hell Knight",
+            gr: "Hell Knight",
+            ru: "Рыцарь Ада"
+        },
+        adventurer: {
+            en: "Adventurer",
+            es: "Adventurer",
+            pt: "Adventurer",
+            gr: "Adventurer",
+            ru: "Авантюрист"
+        },
+        sagittarius: {
+            en: "Sagittarius",
+            es: "Sagittarius",
+            pt: "Sagittarius",
+            gr: "Sagittarius",
+            ru: "Снайпер"
+        },
+        archmage: {
+            en: "Archmage",
+            es: "Archmage",
+            pt: "Archmage",
+            gr: "Archmage",
+            ru: "Архимаг"
+        },
+        soultaker: {
+            en: "Soultaker",
+            es: "Soultaker",
+            pt: "Soultaker",
+            gr: "Soultaker",
+            ru: "Пожиратель Душ"
+        },
+        arcana_lord: {
+            en: "Arcana Lord",
+            es: "Arcana Lord",
+            pt: "Arcana Lord",
+            gr: "Arcana Lord",
+            ru: "Чернокнижник"
+        },
+        cardinal: {
+            en: "Cardinal",
+            es: "Cardinal",
+            pt: "Cardinal",
+            gr: "Cardinal",
+            ru: "Кардинал"
+        },
+        hierophant: {
+            en: "Hierophant",
+            es: "Hierophant",
+            pt: "Hierophant",
+            gr: "Hierophant",
+            ru: "Апостол"
+        },
+        evas_templar: {
+            en: "Eva's Templar",
+            es: "Eva's Templar",
+            pt: "Eva's Templar",
+            gr: "Eva's Templar",
+            ru: "Храмовник Евы"
+        },
+        sword_muse: {
+            en: "Sword Muse",
+            es: "Sword Muse",
+            pt: "Sword Muse",
+            gr: "Sword Muse",
+            ru: "Виртуоз"
+        },
+        wind_rider: {
+            en: "Wind Rider",
+            es: "Wind Rider",
+            pt: "Wind Rider",
+            gr: "Wind Rider",
+            ru: "Странник Ветра"
+        },
+        moonlight_sentinel: {
+            en: "Moonlight Sentinel",
+            es: "Moonlight Sentinel",
+            pt: "Moonlight Sentinel",
+            gr: "Moonlight Sentinel",
+            ru: "Страж Лунного Света"
+        },
+        mystic_muse: {
+            en: "Mystic Muse",
+            es: "Mystic Muse",
+            pt: "Mystic Muse",
+            gr: "Mystic Muse",
+            ru: "Магистр Магии"
+        },
+        elemental_master: {
+            en: "Elemental Master",
+            es: "Elemental Master",
+            pt: "Elemental Master",
+            gr: "Elemental Master",
+            ru: "Мастер Стихий"
+        },
+        evas_saint: {
+            en: "Eva's Saint",
+            es: "Eva's Saint",
+            pt: "Eva's Saint",
+            gr: "Eva's Saint",
+            ru: "Жрец Евы"
+        },
+        shillien_templar: {
+            en: "Shillien Templar",
+            es: "Shillien Templar",
+            pt: "Shillien Templar",
+            gr: "Shillien Templar",
+            ru: "Храмовник Шилен"
+        },
+        spectral_dancer: {
+            en: "Spectral Dancer",
+            es: "Spectral Dancer",
+            pt: "Spectral Dancer",
+            gr: "Spectral Dancer",
+            ru: "Призрачный Танцор"
+        },
+        ghost_hunter: {
+            en: "Ghost Hunter",
+            es: "Ghost Hunter",
+            pt: "Ghost Hunter",
+            gr: "Ghost Hunter",
+            ru: "Призрачный Охотник"
+        },
+        ghost_sentinel: {
+            en: "Ghost Sentinel",
+            es: "Ghost Sentinel",
+            pt: "Ghost Sentinel",
+            gr: "Ghost Sentinel",
+            ru: "Страж Теней"
+        },
+        storm_screamer: {
+            en: "Storm Screamer",
+            es: "Storm Screamer",
+            pt: "Storm Screamer",
+            gr: "Storm Screamer",
+            ru: "Повелитель Бури"
+        },
+        spectral_master: {
+            en: "Spectral Master",
+            es: "Spectral Master",
+            pt: "Spectral Master",
+            gr: "Spectral Master",
+            ru: "Владыка Теней"
+        },
+        shillien_saint: {
+            en: "Shillien Saint",
+            es: "Shillien Saint",
+            pt: "Shillien Saint",
+            gr: "Shillien Saint",
+            ru: "Жрец Шилен"
+        },
+        titan: {
+            en: "Titan",
+            es: "Titan",
+            pt: "Titan",
+            gr: "Titan",
+            ru: "Титан"
+        },
+        grand_khavatari: {
+            en: "Grand Khavatari",
+            es: "Grand Khavatari",
+            pt: "Grand Khavatari",
+            gr: "Grand Khavatari",
+            ru: "Аватар"
+        },
+        dominator: {
+            en: "Dominator",
+            es: "Dominator",
+            pt: "Dominator",
+            gr: "Dominator",
+            ru: "Деспот"
+        },
+        doomcryer: {
+            en: "Doomcryer",
+            es: "Doomcryer",
+            pt: "Doomcryer",
+            gr: "Doomcryer",
+            ru: "Глас Судьбы"
+        },
+        fortune_seeker: {
+            en: "Fortune Seeker",
+            es: "Fortune Seeker",
+            pt: "Fortune Seeker",
+            gr: "Fortune Seeker",
+            ru: "Кладоискатель"
+        },
+        maestro: {
+            en: "Maestro",
+            es: "Maestro",
+            pt: "Maestro",
+            gr: "Maestro",
+            ru: "Мастер"
+        },
+        phantomranger: {
+            en: "Phantom Ranger",
+            es: "Phantom Ranger",
+            pt: "Phantom Ranger",
+            gr: "Phantom Ranger",
+            ru: "Призрачный рейнджер"
+        },
+        silveranger: {
+            en: "Silver Ranger",
+            es: "Silver Ranger",
+            pt: "Silver Ranger",
+            gr: "Silver Ranger",
+            ru: "Серебряный рейнджер"
+        },
+        subdaggers: {
+            en: "Daggers",
+            es: "Dagueros",
+            pt: "Daggers",
+            gr: "Daggers",
+            ru: "Кинжальщики"
+        },
+        abysswalker: {
+            en: "Abyss Walker",
+            es: "Abyss Walker",
+            pt: "Abyss Walker",
+            gr: "Abyss Walker",
+            ru: "Странник бездны"
+        },
+        plainswalker: {
+            en: "Plains Walker",
+            es: "Plains Walker",
+            pt: "Plains Walker",
+            gr: "Plains Walker",
+            ru: "Следопыт"
+        },
+        treasurehunter: {
+            en: "Treasure Hunter",
+            es: "Treasure Hunter",
+            pt: "Treasure Hunter",
+            gr: "Treasure Hunter",
+            ru: "Искатель сокровищ"
+        },
+        human_fighter: {
+            en: "Human Fighter",
+            es: "Human Fighter",
+            pt: "Human Fighter",
+            gr: "Human Fighter",
+            ru: "Воин"
+        },
+        warrior: {
+            en: "Warrior",
+            es: "Warrior",
+            pt: "Warrior",
+            gr: "Warrior",
+            ru: "Воитель"
+        },
+        human_knight: {
+            en: "Human Knight",
+            es: "Human Knight",
+            pt: "Human Knight",
+            gr: "Human Knight",
+            ru: "Рыцарь"
+        },
+        rogue: {
+            en: "Rogue",
+            es: "Rogue",
+            pt: "Rogue",
+            gr: "Rogue",
+            ru: "Разбойник"
+        },
+        elven_fighter: {
+            en: "Elven Fighter",
+            es: "Elven Fighter",
+            pt: "Elven Fighter",
+            gr: "Elven Fighter",
+            ru: "Светлый Воин"
+        },
+        elven_knight: {
+            en: "Elven Knight",
+            es: "Elven Knight",
+            pt: "Elven Knight",
+            gr: "Elven Knight",
+            ru: "Светлый Рыцарь"
+        },
+        elven_scout: {
+            en: "Elven Scout",
+            es: "Elven Scout",
+            pt: "Elven Scout",
+            gr: "Elven Scout",
+            ru: "Разведчик"
+        },
+        dark_fighter: {
+            en: "Dark Fighter",
+            es: "Dark Fighter",
+            pt: "Dark Fighter",
+            gr: "Dark Fighter",
+            ru: "Светлый Воин"
+        },
+        palus_knight: {
+            en: "Palus Knight",
+            es: "Palus Knight",
+            pt: "Palus Knight",
+            gr: "Palus Knight",
+            ru: "Темный Рыцарь"
+        },
+        assassin: {
+            en: "Assassin",
+            es: "Assassin",
+            pt: "Assassin",
+            gr: "Assassin",
+            ru: "Ассасин"
+        },
+        orc_fighter: {
+            en: "Orc Fighter",
+            es: "Orc Fighter",
+            pt: "Orc Fighter",
+            gr: "Orc Fighter",
+            ru: "Орк Боец"
+        },
+        raider: {
+            en: "Orc Raider",
+            es: "Orc Raider",
+            pt: "Orc Raider",
+            gr: "Orc Raider",
+            ru: "Налетчик"
+        },
+        monk: {
+            en: "Orc Monk",
+            es: "Orc Monk",
+            pt: "Orc Monk",
+            gr: "Orc Monk",
+            ru: "Монах"
+        },
+        dwarven_fighter: {
+            en: "Dwarven Fighter",
+            es: "Dwarven Fighter",
+            pt: "Dwarven Fighter",
+            gr: "Dwarven Fighter",
+            ru: "Подмастерье"
+        },
+        scavenger: {
+            en: "Scavenger",
+            es: "Scavenger",
+            pt: "Scavenger",
+            gr: "Scavenger",
+            ru: "Собиратель"
+        },
+        artisan: {
+            en: "Artisan",
+            es: "Artisan",
+            pt: "Artisan",
+            gr: "Artisan",
+            ru: "Ремесленник"
+        },
+        human_mystic: {
+            en: "Human Mystic",
+            es: "Human Mystic",
+            pt: "Human Mystic",
+            gr: "Human Mystic",
+            ru: "Мистик"
+        },
+        human_wizard: {
+            en: "Human Wizard",
+            es: "Human Wizard",
+            pt: "Human Wizard",
+            gr: "Human Wizard",
+            ru: "Маг"
+        },
+        cleric: {
+            en: "Cleric",
+            es: "Cleric",
+            pt: "Cleric",
+            gr: "Cleric",
+            ru: "Клерик"
+        },
+        elven_mystic: {
+            en: "Elven Mystic",
+            es: "Elven Mystic",
+            pt: "Elven Mystic",
+            gr: "Elven Mystic",
+            ru: "Светлый Мистик"
+        },
+        elven_wizard: {
+            en: "Elven Wizard",
+            es: "Elven Wizard",
+            pt: "Elven Wizard",
+            gr: "Elven Wizard",
+            ru: "Светлый Маг"
+        },
+        elven_oracle: {
+            en: "Elven Oracle",
+            es: "Elven Oracle",
+            pt: "Elven Oracle",
+            gr: "Elven Oracle",
+            ru: "Оракул Евы"
+        },
+        dark_mystic: {
+            en: "Dark Mystic",
+            es: "Dark Mystic",
+            pt: "Dark Mystic",
+            gr: "Dark Mystic",
+            ru: "Темный Мистик"
+        },
+        dark_wizard: {
+            en: "Dark Wizard",
+            es: "Dark Wizard",
+            pt: "Dark Wizard",
+            gr: "Dark Wizard",
+            ru: "Темный Маг"
+        },
+        shillien_oracle: {
+            en: "Shillien Oracle",
+            es: "Shillien Oracle",
+            pt: "Shillien Oracle",
+            gr: "Shillien Oracle",
+            ru: "Оракул Шилен"
+        },
+        orc_mystic: {
+            en: "Orc Mystic",
+            es: "Orc Mystic",
+            pt: "Orc Mystic",
+            gr: "Orc Mystic",
+            ru: "Орк Адепт"
+        },
+        orc_shaman: {
+            en: "Orc Shaman",
+            es: "Orc Shaman",
+            pt: "Orc Shaman",
+            gr: "Orc Shaman",
+            ru: "Шаман"
+        },
+        monsterbylevel: {
+            en: "Monsters by Level",
+            es: "Monstruos por Nivel",
+            pt: "Monstros por Level",
+            gr: "Τέρατα ανά Level",
+            ru: "Монстры по уровню"
+        },
+        bossbylevel: {
+            en: "Raid Bosses by Level",
+            es: "Raid Bosses por Nivel",
+            pt: "Raid Bosses por Level",
+            gr: "Raid Bosses ανά Level",
+            ru: "Рейд Боссы по уровню"
+        },
+        territories: {
+            en: "Territories",
+            es: "Territorios",
+            pt: "Territórios",
+            gr: "Περιοχές",
+            ru: "Территории"
+        },
+        aden: {
+            en: "Aden",
+            es: "Aden",
+            pt: "Aden",
+            gr: "Aden",
+            ru: "Аден"
+        },
+        giran: {
+            en: "Giran",
+            es: "Giran",
+            pt: "Giran",
+            gr: "Giran",
+            ru: "Гиран"
+        },
+        gludio: {
+            en: "Gludio",
+            es: "Gludio",
+            pt: "Gludio",
+            gr: "Gludio",
+            ru: "Глудио"
+        },
+        dion: {
+            en: "Dion",
+            es: "Dion",
+            pt: "Dion",
+            gr: "Dion",
+            ru: "Дион"
+        },
+        oren: {
+            en: "Oren",
+            es: "Oren",
+            pt: "Oren",
+            gr: "Oren",
+            ru: "Орен"
+        },
+        raidbosses: {
+            en: "RAID BOSSES",
+            es: "RAID BOSSES",
+            pt: "RAID BOSSES",
+            gr: "RAID BOSSES",
+            ru: "Рейд Боссы"
+        },
+        fieldbosses: {
+            en: "Field Bosses",
+            es: "Field Bosses",
+            pt: "Field Bosses",
+            gr: "Field Bosses",
+            ru: "Полевые Боссы"
+        },
+        solobosses: {
+            en: "Solo Bosses",
+            es: "Solo Bosses",
+            pt: "Solo Bosses",
+            gr: "Solo Bosses",
+            ru: "Соло Рейдовые Боссы"
+        },
+        dungeons: {
+            en: "DUNGEONS",
+            es: "INSTANCIAS",
+            pt: "DUNGEONS",
+            gr: "DUNGEONS",
+            ru: "Сессионные зоны"
+        },
+
+        clanarena: {
+            en: "Clan Arena",
+            es: "Arena de Clan",
+            pt: "Clan Arena",
+            gr: "Clan Arena",
+            ru: "Клан Арена"
+        },
+        abyss: {
+            en: "Dungeon of Abyss",
+            es: "Dungeon of Abyss",
+            pt: "Dungeon of Abyss",
+            gr: "Dungeon of Abyss",
+            ru: "Подземелье бездны"
+        },
+        dungeonsbaium: {
+            en: "Balthus Knights - Baium",
+            es: "Balthus Knights - Baium",
+            pt: "Balthus Knights - Baium",
+            gr: "Balthus Knights - Baium",
+            ru: "Рыцарь Балтуса - Баюм"
+        },
+        dungeonszaken: {
+            en: "Balthus Knights - Zaken",
+            es: "Balthus Knights - Zaken",
+            pt: "Balthus Knights - Zaken",
+            gr: "Balthus Knights - Zaken",
+            ru: "Рыцарь Балтуса - Закен"
+        },
+        dungeonslimited: {
+            en: "Time-Limited Zones",
+            es: "Zonas de Tiempo Limitada",
+            pt: "Time-Limited Zones",
+            gr: "Time-Limited Zones",
+            ru: "Ограниченные по времени зоны"
+        },
+        dungeonspirate: {
+            en: "Ancient Pirates' Tomb",
+            es: "Ancient Pirates' Tomb",
+            pt: "Ancient Pirates' Tomb",
+            gr: "Ancient Pirates' Tomb",
+            ru: "Гробница древних пиратов"
+        },
+        anakim: {
+            en: "Anakim",
+            es: "Anakim",
+            pt: "Anakim",
+            gr: "Anakim",
+            ru: "Анаким"
+        },
+        lilith: {
+            en: "Lilith",
+            es: "Lilith",
+            pt: "Lilith",
+            gr: "Lilith",
+            ru: "Лилит"
+        },
+        all_quests: {
+            en: "All Quests",
+            es: "Todas las Misiones",
+            pt: "Todos os Quests",
+            gr: "Όλα τα Quests",
+            ru: "Все квесты"
+        },
+        quests_starting: {
+            en: "Starting Quests",
+            es: "Misiones de Inicio",
+            pt: "Starting Quests",
+            gr: "Αρχικά Quests",
+            ru: "Starting Quests"
+        },
+        quests_class: {
+            en: "Class Transfer Quests",
+            es: "Misiones de Cambio de Clase",
+            pt: "Quests de Transferência de Classe",
+            gr: "Class Transfer Quests",
+            ru: "Квесты на получение профессии"
+        },
+        quests_misc: {
+            en: "Miscellaneous",
+            es: "Misceláneo",
+            pt: "Diversos",
+            gr: "Διάφορα",
+            ru: "Разное"
+        },
+        wikiquests1: {
+            en: "QUESTS LV. 1-20",
+            es: "MISIONES LV. 1-20",
+            pt: "MISSÕES LV.1-20",
+            gr: "QUESTS LV. 1-20",
+            ru: "Квесты ур.1-20"
+        },
+        wikiquests2: {
+            en: "QUESTS LV. 15+",
+            es: "MISIONES Nivel 15+",
+            pt: "MISIONES Nivel 15+",
+            gr: "QUESTS LV. 15+",
+            ru: "Квесты ур.15+"
+        },
+        wikiquests3: {
+            en: "QUESTS LV. 20+",
+            es: "MISIONES Nivel 20+",
+            pt: "MISSÕES LV 20+",
+            gr: "QUESTS LV. 20+",
+            ru: "Квесты ур 20+"
+        },
+        subbasicinfo: {
+            en: "BASIC INFORMATION",
+            es: "INFORMACIONES BÁSICAS",
+            pt: "INFORMAÇÕES BASICAS",
+            gr: "ΒΑΣΙΚΕΣ ΠΛΗΡΟΦΟΡΙΕΣ",
+            ru: "ОСНОВНАЯ ИНФОРМАЦИЯ"
+        },
+        subautomacro: {
+            en: "Automated Macros",
+            es: "Auto Macros",
+            pt: "Macros automáticas",
+            gr: "Αυτόματα Macros",
+            ru: "Авто Макрос"
+        },
+        subupgrade: {
+            en: "Equipment Upgrade System",
+            es: "Sistema de Mejora de Equipo",
+            pt: "Sistema de melhorias de equipamento",
+            gr: "Σύστημα Equipment Upgrade",
+            ru: "Система улучшения эквипировки"
+        },
+        subfishing: {
+            en: "Fishing",
+            es: "Pesca",
+            pt: "Pescaria",
+            gr: "Ψάρεμα",
+            ru: "Рыбалка"
+        },
+        subassist: {
+            en: "Dimensional Merchant",
+            es: "Dimensional Merchant",
+            pt: "Dimensional Merchant",
+            gr: "Dimensional Merchant",
+            ru: "Менеджер Витаминов"
+        },
+        subtimer: {
+            en: "Server Time",
+            es: "Como verificar el Horario del Servidor?",
+            pt: "Como checar a hora do servidor ?",
+            gr: "Ώρα Server",
+            ru: "Как узнать серверное время?"
+        },
+        release: {
+            en: "Release: November 07, 2020",
+            es: "Lanzamiento: 07 de Noviembre, 2020",
+            pt: "Lançamento: 07 de Novembro, 2020",
+            ru: "Релиз: 07 Ноябрь 2020 г."
+        },
+        sublstore: {
+            en: "L2 Coin Shop",
+            es: "L2 Coin Shop",
+            pt: "Loja L2 Coin",
+            gr: "L2 Coin Shop",
+            ru: "L2 Coin Магазин"
+        },
+        subpverank: {
+            en: "PvE Rankings",
+            es: "Rangos PvE",
+            pt: "PvE Ranks",
+            gr: "PvE Rankings",
+            ru: "PvE Ранги"
+        },
+        subpvprank: {
+            en: "PvP Rankings",
+            es: "Rangos PvP",
+            pt: "PvP Ranks",
+            gr: "PvP Rankings",
+            ru: "PvP Ранги"
+        },
+        subsharelocation: {
+            en: "Share Location System",
+            es: "Sistema de Share Location",
+            pt: "Sistema de Share Location",
+            gr: "Σύστημα Share Location",
+            ru: "Система Share Location"
+        },
+        rbpoints: {
+            en: "Raid Boss Rewards",
+            es: "Recompensas de Raid Boss",
+            pt: "Recompensa por Raid Boss",
+            gr: "Ανταμοιβές Raid Boss",
+            ru: "Награды за Рейд Боссов"
+        },
+        damagedboss: {
+            en: "Damaged Jewelry System",
+            es: "Sistema de Joyería Dañada",
+            pt: "Sistema de joias danificadas",
+            gr: "Σύστημα Damaged Jewelry",
+            ru: "Система поврежденных аксессуаров"
+        },
+        charimproved: {
+            en: "CHARACTER IMPROVEMENT",
+            es: "MEJORA DEL PERSONAJE",
+            pt: "MELHORIA NOS PERSONAGENS",
+            gr: "ΒΕΛΤΙΩΣΗ ΧΑΡΑΚΤΗΡΑ	",
+            ru: "Развитие персонажа"
+        },
+        subdyes: {
+            en: "Dyes and Tattoos",
+            es: "Dyes y Tattoos",
+            pt: "Dyes and Tattoos",
+            gr: "Dyes και Tattoos",
+            ru: "Краски и таттуировки"
+        },
+        mainstatpoint: {
+            en: "Main Characteristics Points",
+            es: "Puntos de Características Principales",
+            pt: "Pontos de Características Principais",
+            gr: "Characteristics Points",
+            ru: "Очки основных характеристик"
+        },
+        rareskills: {
+            en: "Rare Skills",
+            es: "Habilidades Raras",
+            pt: "Habilidades raras",
+            gr: "Rare Skills",
+            ru: "Редкие умения"
+        },
+        transformsys: {
+            en: "Transformation System",
+            es: "Sistema de Transformaciones",
+            pt: "Sistema de Transformação",
+            gr: "Transformations",
+            ru: "Трансформации"
+        },
+        subbattles: {
+            en: "Battles",
+            es: "Batallas",
+            pt: "Batalhas",
+            gr: "Μάχες",
+            ru: "Сражения"
+        },
+        subclanwar: {
+            en: "Clan Wars",
+            es: "Guerras de Clan",
+            pt: "Guerras de Clãs",
+            gr: "Clan Wars",
+            ru: "Война кланов"
+        },
+        suboly: {
+            en: "Olympiad",
+            es: "Olimpiadas",
+            pt: "Olimpíada",
+            gr: "Olympiad",
+            ru: "Олимпиада"
+        },
+        subsiege: {
+            en: "Castle Sieges",
+            es: "Asedio",
+            pt: "Castle Sieges",
+            gr: "Castle Sieges",
+            ru: "Осада Замка"
+        },
+        pvpeventtoi: {
+            en: "ToI - PvP Event",
+            es: "ToI - PvP Event",
+            pt: "ToI - PvP Event",
+            gr: "ToI - PvP Event",
+            ru: "Башня дерзости [PvP событие]"
+        },
+        clanstronghold: {
+            en: "Clan Strongholds",
+            es: "Clan Strongholds",
+            pt: "Clan Strongholds",
+            gr: "Clan Strongholds",
+            ru: "Clan Strongholds"
+        },
+        subsocial: {
+            en: "Socialization",
+            es: "Socialización",
+            pt: "Socialização",
+            gr: "Κοινωνικοποίηση",
+            ru: "Социализация"
+        },
+        subparty: {
+            en: "Party",
+            es: "Party",
+            pt: "Party",
+            gr: "Party",
+            ru: "Группа"
+        },
+        subclans: {
+            en: "Clans",
+            es: "Clanes",
+            pt: "Clans",
+            gr: "Clans",
+            ru: "Клан"
+        },
+        subclanslevel: {
+            en: "Clans - Level",
+            es: "Clanes - Nivel",
+            pt: "Clans - Level",
+            gr: "Clans - Level",
+            ru: "Клан - уровень"
+        },
+        subclanactivity: {
+            en: "Clans - Activities",
+            es: "Clanes - Actividades",
+            pt: "Clans - Actividade",
+            gr: "Clans - Activities",
+            ru: "Клан - мероприятия"
+        },
+        subally: {
+            en: "Alliances",
+            es: "Alianzas",
+            pt: "Aliança",
+            gr: "Alliances",
+            ru: "Альянсы"
+        },
+        subexping: {
+            en: "Experience",
+            es: "Experiencia",
+            pt: "Ganhando Experiência",
+            gr: "Experience",
+            ru: "Прокачка"
+        },
+        subxptable: {
+            en: "Character XP Table",
+            es: "Tabla de Experiencia",
+            pt: "Tabela de experiência",
+            gr: "Πίνακας XP Χαρακτήρων",
+            ru: "Таблица опыта"
+        },
+        subxpspbonus: {
+            en: "XP/SP Bonuses Table",
+            es: "Tabla de Bonus de XP/SP",
+            pt: "Tabela de bonus XP/SP",
+            gr: "Πίνακας XP/SP Bonuses",
+            ru: "Таблица бонусов XP/SP"
+        },
+        importantnpc: {
+            en: "Important NPCs",
+            es: "NPCs Importantes",
+            pt: "NPCs Importantes",
+            gr: "Σημαντικά NPC",
+            ru: "Важные NPC"
+        },
+        weaptype: {
+            en: "Weapon Types",
+            es: "Tipos de Armas",
+            pt: "Tipos de Armas",
+            gr: "Τύποι Weapon",
+            ru: "Типы оружия"
+        },
+        blunts: {
+            en: "Blunts",
+            es: "Mazas",
+            pt: "Blunts",
+            gr: "Blunts",
+            ru: "Дубины"
+        },
+        bows: {
+            en: "Bows",
+            es: "Arcos",
+            pt: "Bows",
+            gr: "Bows",
+            ru: "Луки"
+        },
+        daggers: {
+            en: "Daggers",
+            es: "Dagas",
+            pt: "Daggers",
+            gr: "Daggers",
+            ru: "Кинжалы"
+        },
+        dualswords: {
+            en: "Dual Swords",
+            es: "Espadas Duales",
+            pt: "Dual Swords",
+            gr: "Dual Swords",
+            ru: "Парные мечи"
+        },
+        fists: {
+            en: "Fists",
+            es: "Garras",
+            pt: "Fists",
+            gr: "Fists",
+            ru: "Кастеты"
+        },
+        magicswords: {
+            en: "Magic Swords",
+            es: "Espadas Mágicas",
+            pt: "Magic Swords",
+            gr: "Magic Swords",
+            ru: "Магические мечи"
+        },
+        spears: {
+            en: "Spears",
+            es: "Lanzas",
+            pt: "Spears",
+            gr: "Spears",
+            ru: "Пики"
+        },
+        staffs: {
+            en: "Staves",
+            es: "Bastones",
+            pt: "Staves",
+            gr: "Staves",
+            ru: "Посохи"
+        },
+        swords: {
+            en: "Swords",
+            es: "Espadas",
+            pt: "Swords",
+            gr: "Swords",
+            ru: "Мечи"
+        },
+        twohandblunt: {
+            en: "Two-Handed Blunts",
+            es: "Mazos de Dos Manos",
+            pt: "Two-Handed Blunts",
+            gr: "Two-Handed Blunt",
+            ru: "Двуручные дубины"
+        },
+        twohandstaffs: {
+            en: "Two-Handed Staffs",
+            es: "Bastones de Dos Manos",
+            pt: "Two-Handed Staffs",
+            gr: "Two-Handed Staffs",
+            ru: "Двуручные посохи"
+        },
+        twohandsword: {
+            en: "Two-Handed Swords",
+            es: "Espadas de Dos Manos",
+            pt: "Two-Handed Swords",
+            gr: "Two-Handed Swords",
+            ru: "Двуручные мечи"
+        },
+        armorsets: {
+            en: "Armor Sets",
+            es: "Sets de Armadura",
+            pt: "Sets de Armadura",
+            gr: "Armor Sets",
+            ru: "Комплекты Брони"
+        },
+        heavy: {
+            en: "Heavy",
+            es: "Pesado",
+            pt: "Heavy",
+            gr: "Heavy",
+            ru: "Тяжелые"
+        },
+        light: {
+            en: "Light",
+            es: "Liviano",
+            pt: "Light",
+            gr: "Light",
+            ru: "Легкие"
+        },
+        robe: {
+            en: "Robe",
+            es: "Mágico",
+            pt: "Robe",
+            gr: "Robe",
+            ru: "Магические"
+        },
+        armortypes: {
+            en: "Armor Types",
+            es: "Tipos de Armadura",
+            pt: "Tipos de Armadura",
+            gr: "Τύποι Armor",
+            ru: "Типы брони"
+        },
+        boots: {
+            en: "Boots",
+            es: "Botas",
+            pt: "Boots",
+            gr: "Boots",
+            ru: "Сапоги"
+        },
+        gloves: {
+            en: "Gloves",
+            es: "Guantes",
+            pt: "Gloves",
+            gr: "Gloves",
+            ru: "Перчатки"
+        },
+        heavyarmor: {
+            en: "Heavy Armor",
+            es: "Armadura Pesada",
+            pt: "Heavy Armor",
+            gr: "Heavy Armor",
+            ru: "Тяж. Броня"
+        },
+        helmets: {
+            en: "Helmets",
+            es: "Cascos",
+            pt: "Helmets",
+            gr: "Helmets",
+            ru: "Шлемы"
+        },
+        lightarmor: {
+            en: "Light Armor",
+            es: "Armadura Liviana",
+            pt: "Light Armor",
+            gr: "Light Armor",
+            ru: "Легкая Броня"
+        },
+        magicarmor: {
+            en: "Magic Armor",
+            es: "Armadura Mágica",
+            pt: "Magic Armor",
+            gr: "Magic Armor",
+            ru: "Магическая Броня"
+        },
+        shields: {
+            en: "Shields",
+            es: "Escudos",
+            pt: "Shields",
+            gr: "Shields",
+            ru: "Щиты"
+        },
+        accessories: {
+            en: "ACCESSORIES",
+            es: "ACCESORIOS",
+            pt: "ACESSÓRIOS",
+            gr: "ACCESSORIES",
+            ru: "Аксессуары"
+        },
+        earrings: {
+            en: "Earrings",
+            es: "Pendientes",
+            pt: "Earrings",
+            gr: "Earrings",
+            ru: "Серьги"
+        },
+        rings: {
+            en: "Rings",
+            es: "Anillos",
+            pt: "Rings",
+            gr: "Rings",
+            ru: "Кольца"
+        },
+        necklaces: {
+            en: "Necklaces",
+            es: "Collares",
+            pt: "Necklaces",
+            gr: "Necklaces",
+            ru: "Ожерелья"
+        },
+        epicaccessories: {
+            en: "Epic Accessories",
+            es: "Accesorios Épicos",
+            pt: "Jóias Épicas",
+            gr: "Epic Accessories",
+            ru: "Эпическая бижутерия"
+        },
+        cosmetics: {
+            en: "COSMETICS",
+            es: "COSMÉTICOS",
+            pt: "COSMÉTICOS",
+            gr: "COSMETICS",
+            ru: "Украшения"
+        },
+        agathions: {
+            en: "Agathions",
+            es: "Agathions",
+            pt: "Agathions",
+            gr: "Agathions",
+            ru: "Агатионы"
+        },
+        bracelets: {
+            en: "Bracelets",
+            es: "Brazaletes",
+            pt: "Bracelets",
+            gr: "Bracelets",
+            ru: "Браслеты"
+        },
+        brooches: {
+            en: "Brooches",
+            es: "Brochas",
+            pt: "Brooches",
+            gr: "Brooches",
+            ru: "Брошки"
+        },
+        cloaks: {
+            en: "Cloaks",
+            es: "Capas",
+            pt: "Capas",
+            gr: "Cloaks",
+            ru: "Плащ"
+        },
+        headaccessories: {
+            en: "Head Accessories",
+            es: "Accesorios de Cabeza",
+            pt: "Head Accessories",
+            gr: "Head Accessories",
+            ru: "Головные уборы"
+        },
+        talismans: {
+            en: "Talismans",
+            es: "Talismanes",
+            pt: "Talismãs",
+            gr: "Talismans",
+            ru: "Головные уборы"
+        },
+        miscellaneous: {
+            en: "MISCELLANEOUS",
+            es: "MISCELÁNEOS",
+            pt: "OUTROS",
+            gr: "ΔΙΑΦΟΡΑ",
+            ru: "Разное"
+        },
+        attributestones: {
+            en: "Attribute Stones",
+            es: "Piedras de Atributo",
+            pt: "Attribute Stones",
+            gr: "Attribute Stones",
+            ru: "Камни атрибута"
+        },
+        combination: {
+            en: "Combination",
+            es: "Combinación",
+            pt: "Combination",
+            gr: "Combination",
+            ru: "Комбинация"
+        },
+        craftmaterials: {
+            en: "Crafting Materials",
+            es: "Materiales de Craft",
+            pt: "Materiais de Craft",
+            gr: "Crafting Materials",
+            ru: "Материалы для создания"
+        },
+        enhancementstones: {
+            en: "Enhancement Stones",
+            es: "Piedras de Mejora",
+            pt: "Enhancement Stones",
+            gr: "Enhancement Stones",
+            ru: "Камни улучшения"
+        },
+        improvement: {
+            en: "IMPROVEMENT",
+            es: "MEJORA",
+            pt: "APRIMORAMENTOS",
+            gr: "ΒΕΛΤΙΩΣΗ",
+            ru: "Улучшения"
+        },
+        enchanting: {
+            en: "Enchanting",
+            es: "Encantamiento",
+            pt: "Encantamentos",
+            gr: "Enchanting",
+            ru: "Заточка"
+        },
+        lifestones: {
+            en: "Life Stones",
+            es: "Life Stones",
+            pt: "Life Stones",
+            gr: "Life Stones",
+            ru: "Камни Жизни"
+        },
+        runes: {
+            en: "Runes",
+            es: "Runas",
+            pt: "Runas",
+            gr: "Runes",
+            ru: "Руны"
+        },
+        download_game: {
+            en: "Download Game",
+            es: "Descárgate el juego",
+            pt: "Baixar o jogo",
+            ru: "Скачать"
+        },
+        register_info: {
+            en: "Create your account for start playing",
+            es: "Crea tu cuenta para empezar a jugar",
+            pt: "Crie sua conta para começar a jogar",
+            ru: "Создайте учетную запись, чтобы начать играть"
+        },
+        download: {
+            en: "Download",
+            es: "Descargar",
+            pt: "Baixar",
+            ru: "ФАЙЛЫ"
+        },
+        download_info: {
+            en: "Necessary files for you to play our game right now",
+            es: "Archivos necesarios para que juegues nuestro juego",
+            pt: "Arquivos necessários para jogar agora mesmo",
+            ru: "Необходимые файлы для игры в нашу игру"
+        },
+        wiki: {
+            en: "Wiki",
+            es: "Wiki",
+            pt: "Wiki",
+            ru: "Wiki"
+        },
+        wiki_info: {
+            en: "All the things that you need to know about the game",
+            es: "Todo lo que necesitas saber sobre el juego",
+            pt: "Tudo que você precisa saber sobre o jogo",
+            ru: "Все, что вам нужно знать об игре"
+        },
+        marketplace: {
+            en: "Marketplace",
+            es: "Mercado",
+            pt: "Mercado",
+            ru: "Торговая площадка"
+        },
+        marketplace_info: {
+            en: "Earn real money by selling your items!",
+            es: "Vende tus items y gana dinero real!",
+            pt: "Venda seus itens e receba dinheiro real!",
+            ru: "Зарабатывайте реальные деньги, продавая свои игровые вещи"
+        },
+        donate: {
+            en: "Donate",
+            es: "Donaciones",
+            pt: "Doação",
+            ru: "ДОНАТ"
+        },
+        donate_info: {
+            en: "See how can your help us with your donation",
+            es: "Vea cómo puede ayudarnos con su donación",
+            pt: "Veja com você pode nos ajudar com doações",
+            ru: "Посмотрите, как вы можете нам помочь"
+        },
+
+        // Stages
+        stage01: {
+            en: "Stage 01",
+            es: "Stage 01",
+            pt: "Estágio 01",
+            ru: "Stage 01",
+        },
+        stage02: {
+            en: "Stage 02",
+            es: "Stage 02",
+            pt: "Estágio 02",
+            ru: "Stage 02",
+        },
+        stage03: {
+            en: "Stage 03",
+            es: "Stage 03",
+            pt: "Estágio 03",
+            ru: "Stage 03",
+        },
+        stage04: {
+            en: "Stage 04",
+            es: "Stage 04",
+            pt: "Estágio 04",
+            ru: "Stage 04",
+        },
+        stage05: {
+            en: "Stage 05",
+            es: "Stage 05",
+            pt: "Estágio 05",
+            ru: "Stage 05",
+        },
+        max_level: {
+            en: "Max. level",
+            es: "Max. level",
+            pt: "Nível Max.",
+            ru: "Max. level",
+        },
+        unlock_date: {
+            en: "Unlock date",
+            es: "Unlock dat",
+            pt: "Data de abertura",
+            ru: "Unlock dat",
+        },
+
+        // New box main
+        search_on_wiki: {
+            en: "Enter a search term to search on the Wiki.",
+            es: "Escribe lo que deseas encontrar en la Wiki.",
+            pt: "Digite aqui o que você quer procurar no wiki.",
+            gr: "Εισάγετε έναν όρο αναζήτησης.",
+            ru: "Напишите что Вас интересует."
+        },
+        search_results: {
+            en: "Search Results",
+            es: "Resultados de la Búsqueda",
+            pt: "Resultados da Pesquisa",
+            gr: "Αποτελέσματα Αναζήτησης",
+            ru: "Результаты поиска"
+        },
+        results_num: {
+            en: "results found for",
+            es: "resultados encontrados para",
+            pt: "resultados encontrados para",
+            gr: "αποτελέσματα για",
+            ru: "результатов найдено"
+        },
+        noresults: {
+            en: "No results found for",
+            es: "No se encontraron resultados para",
+            pt: "Nenhum resultado encontrado para",
+            gr: "Δεν βρέθηκαν αποτελέσματα για",
+            ru: "Ничего не найдено для"
+        },
+        recommended_products: {
+            en: "Recommended products",
+            es: "Recommended product",
+            pt: "Produtos recomendados",
+            ru: "Recommended product"
+        },
+        useful_links: {
+            en: "Useful links",
+            es: "Links utiles",
+            pt: "Links úteis",
+            ru: "Полезные ссылки"
+        },
+        media: {
+            en: "Media",
+            es: "Media",
+            pt: "Mídia",
+            gr: "Media",
+            ru: "Медиа"
+        },
+        map: {
+            en: "Map",
+            es: "Mapa",
+            pt: "Mapa",
+            gr: "Χάρτης",
+            ru: "Карта"
+        },
+        shop: {
+            en: "Shop",
+            es: "Tienda",
+            pt: "Loja",
+            ru: "Магазин"
+        },
+        race: {
+            en: "Race",
+            es: "Raza",
+            pt: "Race",
+            gr: "Race",
+            ru: "Раса"
+        },
+        account_panel: {
+            en: "Account panel",
+            es: "Account panel",
+            pt: "Painel de contas",
+            ru: "Account panel",
+        },
+        patreon_t: {
+            en: "Help us being online with Patreon!",
+            es: "Ayúdanos a permanecer online!",
+            pt: "Nos ajude a permanecer online!",
+            ru: "Помогите нам оставаться в сети!"
+        },
+        patreon_r: {
+            en: "Reached",
+            es: "Cumplido",
+            pt: "Alcançado",
+            ru: "поддержки"
+        },
+        patreon_bt: {
+            en: "Support us on Patreon",
+            es: "Apoyanos en Patreon",
+            pt: "Ajude no Patreon",
+            ru: "Поддержать на Patreon"
+        },
+        user_agreement: {
+            en: "User agreement",
+            es: "ES",
+            pt: "Acordo do usuáro",
+            ru: "RU"
+        },
+        privacity_policy: {
+            en: "Privacity policy",
+            es: "ES",
+            pt: "Política de privacidade",
+            ru: "RU"
+        },
+
+        privacity_policy: {
+            en: "Privacity policy",
+            es: "ES",
+            pt: "Política de privacidade",
+            ru: "RU"
+        },
+
+
+
+        // DOWNLOAD PAGE
+        download_p_option_01: {
+            en: "Option 1 (Mediafire)",
+            es: "Opcion 1 (Mediafire)",
+            pt: "Opção 1 (Mediafire)",
+            ru: "Настройка 1 (Mediafire)"
+        },
+        download_p_option_02: {
+            en: "Option 2 (G. Drive)",
+            es: "Opcion 2 (G. Drive)",
+            pt: "Opção 2 (G. Drive)",
+            ru: "Настройка 2 (G. Drive)"
+        },
+        download_p_option_03: {
+            en: "Option 3 (Torrent)",
+            es: "Opcion 3 (Torrent)",
+            pt: "Opção 3 (Torrent)",
+            ru: "Настройка 3 (Torrent)"
+        },
+        download_p_client: {
+            en: "Download Client",
+            es: "Descargar Cliente",
+            pt: "Baixar Cliente",
+            ru: "Скачать клиент."
+        },
+        download_p_client_info: {
+            en: "First of all, you need to have the game installed",
+            es: "En primer lugar, debes tener el juego instalado",
+            pt: "Em primeiro lugar, você precisa ter o jogo instalado",
+            ru: "Для начала, тебе нужен клиент игры."
+        },
+        download_p_patch: {
+            en: "Download Patch",
+            es: "Descargar Parche",
+            pt: "Baixar o Patch",
+            ru: "Скачать патч"
+        },
+        download_p_patch_info: {
+            en: "With the game installed already, you need to download our patch",
+            es: "Una vez instalado el juego debes de descargar nuestro parche",
+            pt: "Com o jogo já instalado, você precisa baixar o nosso patch",
+            ru: "Если у тебя уже есть клиент, просто скачай наш патч."
+        },
+        download_p_register: {
+            en: "Register a new account",
+            es: "Crea una nueva cuenta",
+            pt: "Registrar uma nova conta",
+            ru: "Создать новый аккаунт"
+        },
+        download_p_register_info: {
+            en: "You need a master account to play, if you don’t have it, register account.",
+            es: "Necesitas una cuenta para jugar, si no la tienes, crea una cuenta.",
+            pt: "Você precisa de uma 'Master Account'para jogar. Caso não tenha, registre agora.",
+            ru: "Tебе нужен мастер аккаунт для игры. Зарегистрируйся, если у тебя его ещё нет."
+        },
+        download_p_trouble: {
+            en: "Do you have some download trouble?",
+            es: "Tienes problemas con la descarga?",
+            pt: "Está tendo algum problema?",
+            ru: "Возникли проблемы с загрузкой?"
+        },
+        download_p_trouble_click: {
+            en: "Click here to get help.",
+            es: "Haz click aqui para recibir ayuda",
+            pt: "Clique aqui e obtenha ajuda.",
+            ru: "Нажмите здесь, если вам нужна помощь."
+        },
+        /* Global Wiki */
+        global_name: {
+            en: "Name",
+            es: "Nombre",
+            pt: "Nome",
+            gr: "Όνομα",
+            ru: "Нмя"
+        },
+        global_skill: {
+            en: "Skill",
+            es: "Skill",
+            pt: "Skill",
+            gr: "Skill",
+            ru: "Умения",
+        },
+        global_level: {
+            en: "Level",
+            es: "Nivel",
+            pt: "Level",
+            gr: "Level",
+            ru: "Уровень",
+        },
+        global_acquisition_level: {
+            en: "Acquisition Level",
+            es: "Nivel de Adquisición",
+            pt: "Nível de Aquisição",
+            gr: "Level Εκμάθησης",
+            ru: "Уровень изучения",
+        },
+        global_monsters: {
+            en: "Monsters",
+            es: "Monstruos",
+            pt: "Monstros",
+            gr: "Τέρατα",
+            ru: "Монстры"
+        },
+        global_territory: {
+            en: "Territory",
+            es: "Territorio",
+            pt: "Território",
+            gr: "Περιοχή",
+            ru: "Территория"
+        },
+        global_description: {
+            en: "Description",
+            es: "Descripción",
+            pt: "Descrição",
+            gr: "Περιγραφή",
+            ru: "Описание"
+        },
+        global_characteristics: {
+            en: "Characteristics",
+            es: "Características",
+            pt: "Caracteristicas",
+            gr: "Ιδιότητες",
+            ru: "Характеристики"
+        },
+        territory_level_range: {
+            en: "Level Range",
+            es: "Rango de Nivel",
+            pt: "Faixa de Nível",
+            gr: "Εύρος Level",
+            ru: "Рекомендуемый ровень"
+        },
+        territory_type: {
+            en: "Type",
+            es: "Tipo",
+            pt: "Tipo",
+            gr: "Τύπος",
+            ru: "Тип"
+        },
+        global_party_size: {
+            en: "Party Size",
+            es: "Tamaño de Party",
+            pt: "Tamanho do Party",
+            gr: "Μέγεθος Party",
+            ru: "Рекомендуемый Размер Γруппы"
+        },
+        zone_reset: {
+            en: "Zone Reset Time",
+            es: "Tiempo de Reinicio de la Zona",
+            pt: "Horário de Reset da Instância",
+            gr: "Επαναφορά Χρόνου Reuse",
+            ru: "Время Oтката Зоны"
+        },
+        global_day_wed: {
+            en: "Wednesday",
+            es: "Miércoles",
+            pt: "Quarta-feira",
+            gr: "Τετάρτη",
+            ru: "Среда"
+        },
+        global_contents: {
+            en: "Table of Contents",
+            es: "Tabla de Contenido",
+            pt: "Tabela de Conteúdo",
+            gr: "Πίνακας Περιεχομένων",
+            ru: "Оглавление"
+        },
+        global_rewards: {
+            en: "Rewards",
+            es: "Recompensas",
+            pt: "Premiações",
+            gr: "Ανταμοιβές",
+            ru: "Награды"
+        },
+        global_conditions: {
+            en: "Conditions",
+            es: "Términos",
+            pt: "Condições",
+            gr: "Προϋποθέσεις",
+            ru: "Условия"
+        },
+        global_pcs: {
+            en: "pcs.",
+            es: "piez.",
+            pt: "peç.",
+            gr: "τμχ.",
+            ru: "Шт.",
+        },
+        global_solo: {
+            en: "Solo",
+            es: "Solo",
+            pt: "Solo",
+            gr: "Ατομικό",
+            ru: "Соло",
+        },
+        global_class: {
+            en: "Class",
+            es: "Clase",
+            pt: "Class",
+            gr: "Class",
+            ru: "Класс",
+        },
+        mission: {
+            en: "Mission",
+            es: "Misión",
+            pt: "Missão",
+            gr: "Mission",
+            ru: "Задание"
+        },
+        mission_completion_one: {
+            en: "One-time",
+            es: "Una vez",
+            pt: "Uma vez",
+            gr: "Εφάπαξ",
+            ru: "Одноразовый"
+        },
+        mission_completion_repeatable: {
+            en: "Repeatable",
+            es: "Repetible",
+            pt: "Uma vez",
+            gr: "Επαναλαμβανόμενο",
+            ru: "Повторяемый"
+        },
+        mission_completion_week: {
+            en: "Weekly",
+            es: "Semanal",
+            pt: "Semanal",
+            gr: "Εβδομαδιαίο",
+            ru: "Еженедельный"
+        },
+        dungeon_duration: {
+            en: "Stay Duration",
+            es: "Tiempo Básico",
+            pt: "Tempo padrão de estada",
+            gr: "Διάρκεια",
+            ru: "Базовое время пребывания"
+        },
+        dungeon_duration_extension: {
+            en: "Stay Extension",
+            es: "Extensión de Tiempo",
+            pt: "Prolongamento possível de tempo",
+            gr: "Επέκταση Διάρκειας",
+            ru: "Продление времени"
+        },
+        dungeon_price: {
+            en: "Entry Fee",
+            es: "Precio de Entrada",
+            pt: "Preço de entrada",
+            gr: "Τιμή Εισόδου",
+            ru: "Цена входа"
+        },
+        global_modification: {
+            en: "Modification",
+            es: "Modificación",
+            pt: "Modificação",
+            gr: "Τροποποίηση",
+            ru: "Модификация"
+        },
+        global_cooldown: {
+            en: "Cooldown",
+            es: "Tiempo de reuso",
+            pt: "Cooldown",
+            gr: "Cooldown",
+            ru: "Перезарядка"
+        },
+        global_seconds: {
+            en: "seconds",
+            es: "segundos",
+            pt: "segundos",
+            gr: "δευτερόλεπτα",
+            ru: "секунды"
+        },
+        fighter: {
+            en: "Fighter",
+            es: "Fighter",
+            pt: "Fighter",
+            gr: "Fighter",
+            ru: "Воин"
+        },
+        mystic: {
+            en: "Mystic",
+            es: "Mystic",
+            pt: "Mystic",
+            gr: "Mystic",
+            ru: "Мистик"
+        },
+        quest_details: {
+            en: "Quest Details",
+            es: "Detalles de la Quest",
+            pt: "Detalhes da Quest",
+            gr: "Λεπτομέρειες Quest",
+            ru: "Детали квеста"
+        },
+        all_races: {
+            en: "All races",
+            es: "Todas las razas",
+            pt: "Todas as raças",
+            gr: "Όλα τα races",
+            ru: "Все расы"
+        },
+        global_guide: {
+            en: "Guide",
+            es: "Guía",
+            pt: "Guia",
+            gr: "Οδηγίες",
+            ru: "Руководство"
+        },
+        global_base_class: {
+            en: "Base Class",
+            es: "Base Class",
+            pt: "Base Class",
+            gr: "Βασικό Class",
+            ru: "Base Class"
+        },
+        global_class_1st: {
+            en: "First Class",
+            es: "Primera Clase",
+            pt: "Primeira Class",
+            gr: "Πρώτο Class",
+            ru: "Первый Класс",
+        },
+        global_class_2nd: {
+            en: "Second Class",
+            es: "Segunda Clase",
+            pt: "Segundo Class",
+            gr: "Δεύτερο Class",
+            ru: "Второй Класс",
+        },
+        global_class_3rd: {
+            en: "Third Class",
+            es: "Tercera Clase",
+            pt: "Terceiro Class",
+            gr: "Τρίτο Class",
+            ru: "Третий Класс",
+        },
+        global_class_1st_t: {
+            en: "First Class Transfer",
+            es: "Primer Cambio de Clase",
+            pt: "Primeira Transferência de Class",
+            gr: "Πρώτο Class Transfer",
+            ru: "Первая смена профессии",
+        },
+        global_class_2nd_t: {
+            en: "Second Class Transfer",
+            es: "Segundo Cambio de Clase",
+            pt: "Segunda Transferência de Class",
+            gr: "Δεύτερο Class Transfer",
+            ru: "Вторая смена профессии",
+        },
+        global_class_3rd_t: {
+            en: "Third Class Transfer",
+            es: "Tercer Cambio de Clase",
+            pt: "Terceira Transferência de Class",
+            gr: "Τρίτο Class Transfer",
+            ru: "Третья смена профессии",
+        },
+        global_item: {
+            en: "Item",
+            es: "Item",
+            pt: "Iten",
+            gr: "Item",
+            ru: "Предмет"
+        },
+        global_cost: {
+            en: "Cost",
+            es: "Costo",
+            pt: "Custo",
+            gr: "Κόστος",
+            ru: "Расходы"
+        },
+        class_same_skill: {
+            en: "Classes with the same skill",
+            es: "Clases con la misma habilidad",
+            pt: "Aulas com a mesma habilidade",
+            gr: "Classes με το ίδιο skill",
+            ru: "Классы с таким же умением"
+        },
+        global_range: {
+            en: "Range",
+            es: "Rango",
+            pt: "Faixa",
+            gr: "Εμβέλεια",
+            ru: "Дистанция каста"
+        },
+        global_reuse: {
+            en: "Reuse",
+            es: "Tiempo de reutilización",
+            pt: "Reuso",
+            gr: "Reuse",
+            ru: "Перезарядка"
+        },
+        global_casting_time: {
+            en: "Casting Time",
+            es: "Tiempo de lanzamiento",
+            pt: "Tempo de conjuração",
+            gr: "Casting Time",
+            ru: "Bремя каста"
+        },
+        global_skill_details: {
+            en: "Skill Details",
+            es: "Detalles de la habilidad",
+            pt: "Detalhes de habilidade",
+            gr: "Λεπτομέρειες Skill",
+            ru: "Детали умений"
+        },
+        global_skill_upgrades: {
+            en: "Skill Upgrades",
+            es: "Mejoras de habilidad",
+            pt: "Melhorias de habilidade",
+            gr: "Αναβαθμίσεις του Skill",
+            ru: "Повышение умений"
+        },
+        global_skill_physical: {
+            en: "Physical",
+            es: "Physical",
+            pt: "Physical",
+            gr: "Physical",
+            ru: "Физическое"
+        },
+        global_skill_active: {
+            en: "Active",
+            es: "Active",
+            pt: "Active",
+            gr: "Active",
+            ru: "Mагическое"
+        },
+        global_skill_passive: {
+            en: "Passive",
+            es: "Passive",
+            pt: "Passive",
+            gr: "Passive",
+            ru: "Πассивное"
+        },
+        global_skill_toggle: {
+            en: "Toggle",
+            es: "Toggle",
+            pt: "Toggle",
+            gr: "Toggle",
+            ru: "Bключаемое"
+        },
+        global_count: {
+            en: "Count",
+            es: "Cantidad",
+            pt: "Quantidade",
+            gr: "Τεμάχια",
+            ru: "Количество"
+        },
+        global_chance: {
+            en: "Chance",
+            es: "Probabilidad",
+            pt: "Probabilidade",
+            gr: "Πιθανότητα",
+            ru: "Вероятность"
+        },
+        item_chest: {
+            en:"Upper Body",
+            es:"Upper Body",
+            pt:"Upper Body",
+            gr:"Upper Body",
+            ru:"Верх. доспех"
+        },
+        item_legs: {
+            en:"Lower Body",
+            es:"Lower Body",
+            pt:"Lower Body",
+            gr:"Lower Body",
+            ru:"Ниж. доспех"
+        },
+        item_feet: {
+            en:"Boots",
+            es:"Boots",
+            pt:"Boots",
+            gr:"Boots",
+            ru:"Сапоги"
+        },
+        item_head: {
+            en:"Headgear",
+            es:"Headgear",
+            pt:"Headgear",
+            gr:"Headgear",
+            ru:"Шлем"
+        },
+        item_gloves: {
+            en:"Gloves",
+            es:"Gloves",
+            pt:"Gloves",
+            gr:"Gloves",
+            ru:"Перчатки"
+        },
+        item_onepiece: {
+            en:"Upper and Lower Body",
+            es:"Upper and Lower Body",
+            pt:"Upper and Lower Body",
+            gr:"Upper and Lower Body",
+            ru:"Ниж. и верх. доспехи"
+        },
+        item_rear: {
+            en:"Earring",
+            es:"Earring",
+            pt:"Earring",
+            gr:"Earring",
+            ru:"Серьга"
+        },
+        item_rfinger: {
+            en:"Ring",
+            es:"Ring",
+            pt:"Ring",
+            gr:"Ring",
+            ru:"Кольцо"
+        },
+        item_neck: {
+            en:"Necklace",
+            es:"Necklace",
+            pt:"Necklace",
+            gr:"Necklace",
+            ru:"Ожерелье"
+        },
+        item_hair: {
+            en:"Hair Accessory",
+            es:"Hair Accessory",
+            pt:"Hair Accessory",
+            gr:"Hair Accessory",
+            ru:"Головной убор"
+        },
+        item_alldress: {
+            en:"",
+            es:"",
+            pt:"",
+            gr:"",
+            ru:""
+        },
+        item_hair2: {
+            en:"Hair Accessory",
+            es:"Hair Accessory",
+            pt:"Hair Accessory",
+            gr:"Hair Accessory",
+            ru:"Головной убор"
+        },
+        item_hairall: {
+            en:"Hair Accessory",
+            es:"Hair Accessory",
+            pt:"Hair Accessory",
+            gr:"Hair Accessory",
+            ru:"Головной убор"
+        },
+        item_rbracelet: {
+            en:"Right Bracelet",
+            es:"Right Bracelet",
+            pt:"Right Bracelet",
+            gr:"Right Bracelet",
+            ru:"Правый браслет"
+        },
+        item_lbracelet: {
+            en:"Left Bracelet",
+            es:"Left Bracelet",
+            pt:"Left Bracelet",
+            gr:"Left Bracelet",
+            ru:"Левый браслет"
+        },
+        item_waist: {
+            en:"",
+            es:"",
+            pt:"",
+            gr:"",
+            ru:""
+        },
+        item_back: {
+            en:"Cloak",
+            es:"Cloak",
+            pt:"Cloak",
+            gr:"Cloak",
+            ru:"Плащ"
+        },
+        item_lhand: {
+            en:"Sigil",
+            es:"Sigil",
+            pt:"Sigil",
+            gr:"Sigil",
+            ru:"Символ"
+        },
+        item_deco1: {
+            en:"Talisman",
+            es:"Talisman",
+            pt:"Talisman",
+            gr:"Talisman",
+            ru:"Талисман"
+        },
+        item_agathion_main: {
+            en:"Agathion",
+            es:"Agathion",
+            pt:"Agathion",
+            gr:"Agathion",
+            ru:"Агатион"
+        },
+        item_underwear: {
+            en:"Pendant",
+            es:"Pendant",
+            pt:"Pendant",
+            gr:"Pendant",
+            ru:"Нижнее Белье"
+        },
+        item_jewel1: {
+            en:"",
+            es:"",
+            pt:"",
+            gr:"",
+            ru:""
+        },
+        item_shield: {
+            en: "Shield",
+            es: "Shield",
+            pt: "Shield",
+            gr: "Shield",
+            ru: "Щит"
+        },
+        global_readmore: {
+            en: "Read More",
+            es: "Leer Más",
+            pt: "Leia Mais",
+            gr: "Διαβαστε Περισσοτερα",
+            ru: "Подробнее"
+        },
+        global_all_classes: {
+            en: "All classes",
+            es: "All classes",
+            pt: "All classes",
+            gr: "Όλα τα classes",
+            ru: "All classes"
+        }
+    };
+
+    translations = t;
+
+    var _t = $('body').translate({ lang: "en", t: t });
+    var str = _t.g("translate");
+
+    var urlLang = window.location.pathname;
+    urlLang = urlLang.substring(urlLang.length - 2, urlLang.length)
+
+    /*if(urlLang === "en" || urlLang === "es" ||urlLang === "pt" ||urlLang === "gr" ||urlLang === "ru")
+    {
+        storage_lang = urlLang;
+    }
+    else
+    {*/
+    if (storage_lang == null) {
+        storage_lang = 'en';
+    }
+    //}
+
+    var lang = storage_lang;
+    _t.lang(lang);
+    $('.lang_selector').removeClass('active');
+
+    $('.lang_selector').each(function(i, obj) {
+        if ($(this).attr('data-value') == storage_lang) {
+            $(this).addClass('active');
+        }
+    });
+
+    $('a[href^="https://cp.innadril.com"').each(function(i, obj) {
+        $(this).attr('href', $(this).attr('data-href') + '?source_lang=' + lang);
+    });
+    $('.download-register-button').each(function(i, obj) {
+        $(this).attr('href', $(this).attr('data-href') + '?source_lang=' + lang);
+    });
+
+    $('.form-search-input').each(function(i, obj) {
+        $(this).attr("placeholder", t["search"][lang]);
+    });
+    $('#email-form-input').attr("placeholder", t["email"][lang]);
+    $('#login-form-input').attr("placeholder", t["login"][lang]);
+    $('#pass-form-input').attr("placeholder", t["password"][lang]);
+
+    globalLang = lang;
+
+    $(".lang_selector").click(function(ev) {
+        lang = $(this).attr("data-value");
+        _t.lang(lang);
+
+        localStorage.setItem('language', lang);
+
+        $('.lang_selector').removeClass('active');
+        $(this).addClass('active');
+
+        $('a[href^="https://cp.innadril.com"').each(function(i, obj) {
+            $(this).attr('href', $(this).attr('data-href') + '?source_lang=' + lang);
+        });
+        $('.download-register-button').each(function(i, obj) {
+            $(this).attr('href', $(this).attr('data-href') + '?source_lang=' + lang);
+        });
+
+        ev.preventDefault();
+    });
+});

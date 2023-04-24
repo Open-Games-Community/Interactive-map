@@ -1,0 +1,681 @@
+// Loader
+$(window).on("DOMContentLoaded", function() {
+    
+    if (navigator.userAgent.indexOf("Innadril") !== -1){
+        $(".loader").hide();
+    }
+    else
+    {
+        $(".loader").fadeOut();
+        $("body").addClass("animations");
+    }
+
+    /* Lyrei - Wiki specific */
+    if (window.location.href.includes("wiki")) {
+        /* Lyrei - Hide popup if browsing wiki */
+        $(".modal_bn").hide();
+        $(".social_block").hide();
+
+        //TODO
+        /*let rows2 = document.querySelectorAll('tr');
+        for (let r = 0; r < rows2.length; r++) {
+            let subtables = rows2[r].querySelectorAll('.subtable');
+            let maxHeight = 0;
+            for (let i = 0; i < subtables.length; i++) {
+                maxHeight = Math.max(maxHeight, subtables[i].clientHeight);
+            }
+            for (let i = 0; i < subtables.length; i++) subtables[i].style.height='' + maxHeight + 'px !important';
+        }*/
+
+        var tds = document.querySelectorAll(".table-list tr, .table-list th");
+        var groups = [];
+
+        for (var i = 0; i < tds.length; i++) {
+            if (tds[i].getAttribute('rowspan') != null) {
+                var rspan = tds[i];
+                groups.push({
+                    parent: rspan.parentNode,
+                    height: rspan.getAttribute('rowspan')
+                });
+            }
+        }
+
+        var count = 0;
+        var rowsSel = document.querySelectorAll('.table-list tr');
+        var rows = Array.prototype.slice.call(rowsSel);
+        var dark = false;
+
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].parentElement.parentElement.parentElement.classList.contains("subtable")) {
+                rows.splice(i, 1);
+                i--;
+            }
+        }
+
+        /*Array.prototype.forEach.call( rows, function( node ) {
+            if(node.parentElement.parentElement.parentElement.classList.contains("subtable"))
+                node.parentNode.removeChild( node );
+        });*/
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var index = groupIndex(row);
+            if (index != null && dark) {
+                var group = groups[index];
+                var height = parseInt(group.height);
+                for (var j = i; j < i + height; j++) {
+                    rows[j].classList.add('table-row-odd');
+                }
+                i += height - 1;
+                dark = !dark;
+                continue;
+            }
+            if (dark) {
+                //if(rows[i].parentElement.parentElement.parentElement.classList.contains("subtable"))
+                //    continue;
+                //console.log(rows[i].parentElement.parentElement.parentElement.nodeName);
+                rows[i].classList.add('table-row-odd');
+            }
+            dark = !dark;
+        }
+
+        function groupIndex(element) {
+            for (var i = 0; i < groups.length; i++) {
+                var group = groups[i].parent;
+                if (group == element) {
+                    return i;
+                }
+            }
+            return null;
+        }
+
+        if (window.location.href.includes("feature")) {
+            var start = new Date(2021, 1, 1), // Feb 1, 2021
+                stage1 = new Date(2021, 1, 26),
+                stage2 = new Date(2021, 2, 22),
+                stage3 = new Date(2021, 3, 12),
+                stage4 = new Date(2021, 4, 3),
+                today = new Date();
+            var end;
+            var sWidth;
+            var divIDs = new Array();
+            if (today >= stage1) {
+                if (today >= stage2) {
+                    if (today >= stage3) {
+                        if (today >= stage4) {
+                            end = stage4;
+                            //sWidth = 900;
+                            divIDs.push("stage4");
+                            divIDs.push("stage3");
+                            divIDs.push("stage2");
+                            divIDs.push("stage1");
+                        } else {
+                            start = stage3;
+                            end = stage4;
+                            //sWidth = 702;
+                            divIDs.push("stage3");
+                            divIDs.push("stage2");
+                            divIDs.push("stage1");
+                        }
+                    } else {
+                        /*end = stage3;
+                        sWidth = 702;
+                        divIDs.push("stage3");*/
+
+                        end = stage2;
+                        //sWidth = 253;
+                        divIDs.push("stage2");
+                        divIDs.push("stage1");
+                    }
+                } else {
+                    /*end = stage2;
+                    sWidth = 477;
+                    divIDs.push("stage2");*/
+
+                    end = stage1;
+                    ///sWidth = 253;
+                    divIDs.push("stage1");
+                }
+            } else {
+                end = stage1;
+                //sWidth = 253;
+                divIDs.push("stage1");
+            }
+            sWidth = 223;
+            var p = ((today - start) / (end - start)) * 100;
+            var fWidth = (divIDs.length-1) * 25 + (p/100 * 223) +"%";
+            $('.wiki .episodes-bar span').css('width', fWidth);
+            $.each(divIDs, function(i, val) {
+                $("#" + val).addClass("active");
+            });
+        }
+    }
+
+    if (window.location.href.includes("promo")) {
+        var start = new Date(2021, 1, 1), // Feb 1, 2021
+            stage1 = new Date(2021, 1, 26),
+            stage2 = new Date(2021, 2, 22),
+            stage3 = new Date(2021, 3, 12),
+            stage4 = new Date(2021, 4, 3),
+            today = new Date();
+        var end;
+        var sWidth;
+        var divIDs = new Array();
+        if (today >= stage1) {
+            if (today >= stage2) {
+                if (today >= stage3) {
+                    if (today >= stage4) {
+                        end = stage4;
+                        //sWidth = 900;
+                        divIDs.push("stage-4");
+                        divIDs.push("stage-3");
+                        divIDs.push("stage-2");
+                        divIDs.push("stage-1");
+                    } else {
+                        start = stage3;
+                        end = stage4;
+                        //sWidth = 702;
+                        divIDs.push("stage-3");
+                        divIDs.push("stage-2");
+                        divIDs.push("stage-1");
+                    }
+                } else {
+                    /*end = stage3;
+                    sWidth = 702;
+                    divIDs.push("stage3");*/
+
+                    end = stage2;
+                    //sWidth = 253;
+                    divIDs.push("stage-2");
+                    divIDs.push("stage-1");
+                }
+            } else {
+                /*end = stage2;
+                sWidth = 477;
+                divIDs.push("stage2");*/
+
+                end = stage1;
+                ///sWidth = 253;
+                divIDs.push("stage-1");
+            }
+        } else {
+            end = stage1;
+            //sWidth = 253;
+            divIDs.push("stage-1");
+        }
+        sWidth = 301;
+        var p = ((today - start) / (end - start)) * 100;
+        var fWidth = (divIDs.length-1) * 25 + (p/100 * 223) +"%";
+        $('.stage-progress-inner').css('width', fWidth);
+        $.each(divIDs, function(i, val) {
+            console.log("ADD ACTIVE: "+val)
+            $('.'+val).addClass("active");
+        });
+    }
+
+    if (!localStorage.getItem('lang')) {
+        localStorage.setItem('lang', 'en');
+    }
+    if (localStorage.getItem('lang') == "gr") {
+        $("html").attr("lang", "el");
+        $("body").attr("lang", "el");
+        if (window.location.href.includes("wiki")) {
+            $("head").append("<style>body, .wiki, .wiki *{font-family: 'Literata';} .content-styled .section-subtitle, .content-styled .wiki .useful-bar span, .wiki .useful-bar .content-styled span {font-family: 'Literata';}</style>")
+        } else if (window.location.href.includes("promo")) {
+            $("head").append("<style>.container *{font-family: 'Literata';}</style>")
+        } else {
+            $("head").append("<style>body, .wiki, .wiki *{font-family: 'Literata', 'Roboto';} .content-styled .section-subtitle, .content-styled .wiki .useful-bar span, .wiki .useful-bar .content-styled span {font-family: 'Literata';}</style>")
+        }
+        //$("body").greekUppercase();
+
+    } else if (localStorage.getItem('lang') == "ru") {
+        $("html").attr("lang", "ru");
+        $("body").attr("lang", "ru");
+        $("head").append("<style>body, .wiki, .wiki *{font-family: 'Roboto';} .content-styled .section-subtitle, .content-styled .wiki .useful-bar span, .wiki .useful-bar .content-styled span {font-family: 'Roboto';}</style>");
+    } else {
+        //$("head").append("<style>body, .wiki, .wiki *{font-family: 'Vollkorn', serif !important;}</style>")
+    }
+
+    if (localStorage.getItem('lang') != "en") {
+        if ($("#img-read").attr("src") != undefined) {
+            $("#img-read").attr("src", $("#img-read").attr("src").replace("read.png", "read-" + localStorage.getItem('lang') + ".png"));
+        }
+        if ($("#img-reg").attr("src") != undefined) {
+            $("#img-reg").attr("src", $("#img-reg").attr("src").replace("reg.png", "reg-" + localStorage.getItem('lang') + ".png"));
+        }
+        if ($("#img-download").attr("src") != undefined) {
+            $("#img-download").attr("src", $("#img-download").attr("src").replace("download.png", "download-" + localStorage.getItem('lang') + ".png"));
+
+        }
+    }
+
+    var urls = document.querySelectorAll('.lang');
+    urls.forEach(elements => {
+        var url = elements.href;
+        var cadenas = url.split("/");
+        cadenas[cadenas.length - 1] = localStorage.getItem('lang');
+        var newUrl = cadenas.join('/')
+        elements.href = newUrl;
+    });
+});
+
+$(document).ready(function() {
+
+    var quest_map_links = document.getElementsByClassName("quest_map_link");
+
+    if (!quest_map_links) {
+        $('#questmap').style.display = "none";
+    }
+
+    $('.modal').hide();
+
+    $(document).on('click', '.grid-view', function() {
+        $('.allnews').addClass('active');
+    });
+    $(document).on('click', '.allnews .bt-close', function() {
+        $('.allnews').removeClass('active');
+    });
+
+    $(document).on('click', '.recommended-title', function() {
+        $(this).parent().toggleClass('active');
+    });
+
+    $(document).on('click', '.stages li', function() {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        } else {
+            $('.stages li').removeClass('active');
+
+            $(this).addClass('active');
+        }
+    });
+
+    $(document).on('click', '.menu_page > a', function() {
+        $(".sub_menu_category").removeClass("active");
+        $("#" + $(this).attr("rel")).addClass("active");
+    });
+
+    $(document).on('click', '.content_page, .wiki', function() {
+        $(".sub_menu_category").removeClass("active");
+    });
+
+    // $(document).click(function(e) {
+    //     if (e.target.id == 'modal-lang') {
+    //         $("#modal-lang").hide();
+    //     }
+    // });
+
+    var itens = document.getElementsByClassName("resources");
+    for (var i = 0; i < itens.length; i++) {
+        for (var g = 0; g < itens.length; g++) {
+            if (itens[i].id == itens[g].id && (itens[i].parentElement.innerText != itens[g].parentElement.innerText && itens[i].parentElement.parentElement.parentElement.id == itens[g].parentElement.parentElement.parentElement.id)) {
+
+                //console.log(itens[i].parentElement.innerText);
+                //console.log(itens[g].parentElement.innerText);
+                itens[i].parentElement.innerHTML = itens[i].outerHTML + (parseInt(itens[i].parentElement.innerText) + parseInt(itens[g].parentElement.innerText))
+                itens[g].parentElement.parentElement.removeChild(itens[g].parentElement);
+            }
+        }
+    }
+
+    $(".input-search-wiki").on('keyup', function(e) {
+        var searchWikiValue = $('.input-search-wiki').val();
+        var searchUrl = "https://innadril.com/search?search=";
+
+        if (searchWikiValue.length > 2) {
+            $('.search-bt').addClass('active');
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                window.location = searchUrl + searchWikiValue;
+            }
+        } else {
+            $('.search-bt').removeClass('active');
+        }
+
+    });
+    $(document).on('click', '.search-bt', function() {
+        var searchWikiValue = $('.input-search-wiki').val();
+        var searchUrl = "https://innadril.com/search?search=";
+
+        if (searchWikiValue.length > 2) {
+            window.location = searchUrl + searchWikiValue;
+        }
+    });
+
+    // PATREON BAR
+    var patreon_bar = $('.patreon-bar .bar').width();
+    var patreon_progress = $('.patreon-bar .bar span').width();
+    var patreon_result = patreon_progress * 100 / patreon_bar;
+
+    if (patreon_result < 33) {
+        $('.patreon-bar .bar span').css('background', '#9c3333');
+    } else if (patreon_result >= 33 && patreon_result < 75) {
+        $('.patreon-bar .bar span').css('background', '#c3850d');
+    } else if (patreon_result >= 75) {
+        $('.patreon-bar .bar span').css('background', '#c3c120');
+    }
+
+    //console.log(patreon_result); Lyrei - Why?
+
+    // NOVO MENU MOBILE
+    if ($(window).width() <= 768) {
+        $(document).on('click', '.wiki-nav .wiki-nav-collapse', function() {
+            $(this).toggleClass('active');
+            $(this).next('ul').toggleClass('active');
+            $('.wiki-nav').toggleClass('active');
+            $('body').toggleClass('overflow-hidden');
+        });
+        $(document).on('click', '.wiki-nav .item', function() {
+            $(this).next('.submenu').addClass('active');
+        });
+        $(document).on('click', '.wiki-nav .category-title', function() {
+            $(this).next('ol').addClass('active');
+        });
+        $(document).on('click', '.wiki-nav .close-menu', function() {
+            $(this).parent().removeClass('active');
+        });
+    }
+
+    // Menu Mobile
+    $(document).on('click', '.menu-mobile', function() {
+        $(this).toggleClass('active');
+        $('.nav').toggleClass('active');
+        $('.navigation').toggleClass('active');
+        $('body').toggleClass('overflow-hidden');
+    });
+
+    //$('.content-styled a').attr('href', '#');
+    // $('td img').attr('data-url', '');
+    // $('td img').attr('alt', '');
+    // $('td div').attr('data-lb-trigger', '');
+    // $('td div').attr('data-lb-id', '');
+    // $('td div').attr('data-src', '');
+
+    // News Slider
+    var sliderColumns = 1;
+    if ($(window).width() <= 600) {
+        var sliderColumns = 1;
+    }
+    $(document).on('click', '[slider-button]', function() {
+        var sliderContent = $('.news-content');
+        var sliderItem = sliderContent.children();
+        var sliderItemCount = parseInt(sliderItem.length);
+        var sliderItemWidth = sliderContent.width();
+        var buttonPrev = $('[slider-button="prev"]');
+        var buttonNext = $('[slider-button="next"]');
+        var sliderPosition = sliderContent.attr('slider-position');
+
+        if ($(this).attr('slider-button') == 'next') {
+
+            if (sliderPosition < sliderItemCount - sliderColumns) {
+                sliderPosition++
+                sliderContent.attr('slider-position', sliderPosition);
+
+                sliderItem.css({
+                    'transform': 'translateX(-' + sliderPosition * sliderItemWidth + 'px)',
+                    '-ms-transform': 'translateX(-' + sliderPosition * sliderItemWidth + 'px)',
+                    '-webkit-transform': 'translateX(-' + sliderPosition * sliderItemWidth + 'px)'
+                });
+            }
+        }
+        if ($(this).attr('slider-button') == 'prev') {
+
+            if (sliderPosition > 0) {
+                var backCalc = (sliderPosition * sliderItemWidth) - sliderItemWidth;
+                sliderPosition--
+                sliderContent.attr('slider-position', sliderPosition);
+
+                sliderItem.css({
+                    'transform': 'translateX(-' + backCalc + 'px)',
+                    '-ms-transform': 'translateX(-' + backCalc + 'px)',
+                    '-webkit-transform': 'translateX(-' + backCalc + 'px)'
+                });
+            }
+        }
+
+        if (sliderPosition < 1)
+            buttonPrev.addClass('disabled');
+        else
+            buttonPrev.removeClass('disabled');
+
+        if (sliderPosition == sliderItemCount - sliderColumns)
+            buttonNext.addClass('disabled');
+        else
+            buttonNext.removeClass('disabled');
+    });
+
+    // Modals functions
+    $(document).on('click', '.modal-download', function() {
+        $('.modal.download').fadeIn('fast');
+        $('body').addClass('overflow-hidden');
+    });
+    $(document).on('click', '.modal .close', function() {
+        $(this).parent().parent().fadeOut();
+        $('.menu-mobile').removeClass('active');
+        $('body').removeClass('overflow-hidden');
+    });
+
+    $(document).on('click', '.nav a', function() {
+        $('.nav').removeClass('active');
+        $('.menu-mobile').removeClass('active');
+    });
+    $(document).on('click', '.navigation a', function() {
+        $('.navigation').removeClass('active');
+        $('.menu-mobile').removeClass('active');
+    });
+
+    // Other pages open
+    $(document).on('click', '.open-myaccount, .open-donate, .open-shop, .open-register', function() {
+        $('.langs, .social').hide();
+        $('header').addClass('filled');
+        $('header .nav a, header .navigation a, .menu-mobile').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    // Wiki nav scroll
+    if ($(window).width() > 768) {
+        var $document = $(document),
+            $element = $('.wiki-nav'),
+            className = 'scrolling';
+
+        $document.scroll(function() {
+            if ($document.scrollTop() >= 150) {
+                // user scrolled 50 pixels or more;
+                // do stuff
+                $element.addClass(className);
+                $('.button-top').addClass('visible');
+                // $('.button-back').addClass('visible');
+            } else {
+                $element.removeClass(className);
+                $('.button-top').removeClass('visible');
+                // $('.button-back').removeClass('visible');
+            }
+
+        });
+    }
+
+    // Wiki functions
+    $(document).on('click', '.wiki-nav .item', function(e) {
+        $('.wiki-mask').remove();
+        $('.wiki-nav .item').removeClass('active');
+        $(this).toggleClass('active');
+        e.preventDefault();
+        $('body').append('<div class="wiki-mask"></div>');
+    });
+    $(document).on('click', '.wiki-mask', function() {
+        $('.wiki-nav .item').removeClass('active');
+        $(this).remove();
+    });
+
+    // Wiki nav mobile
+    $('#wiki-nav-option').change(function() {
+        $('#wiki-nav-option ~ select').hide();
+        $('#' + $(this).val()).show();
+    });
+
+    // Wiki tabs function
+    $(document).on('click', '.tabs.havesubcontent li span, .tabs.havesubcontent li a', function(e) {
+        var aElm = $(this).parent().parent().find('span, a');
+        var href = aElm.attr('href')
+
+        $(aElm).trigger('rebuildTooltip');
+
+        var hasDumbHref = href == "#" || href == "javascript:void(0)";
+        if (hasDumbHref) {
+            e.preventDefault();
+        }
+
+        aElm.removeClass('active');
+        $(this).addClass('active');
+
+        var selectedContent = $(this).attr('title');
+        var selectedElement = '#' + selectedContent;
+
+        $(this).parent().parent().next('.tabs-subcontent').find('> *').removeClass('active');
+        $(this).parent().parent().next('.tabs-subcontent').find(selectedElement).addClass('active');
+        if (hasDumbHref) {
+            return false;
+        }
+    });
+
+    // Wiki Craft Tree
+    $(document).on('click', '.craft-tree button', function() {
+        $(this).toggleClass('expanded');
+    });
+
+    // The function actually applying the offset
+    if ($(window).width() > 768) {
+        var headerHeight = 90;
+        var headerWikiHeight = 72;
+    } else {
+        var headerHeight = 70;
+        var headerWikiHeight = 10;
+    }
+
+    function offsetAnchor() {
+        if (location.hash.length !== 0) {
+            window.scrollTo(window.scrollX, window.scrollY - (headerHeight + headerWikiHeight));
+        }
+    }
+
+    // Captures click events of all <a> elements with href starting with #
+    $(document).on('click', 'a[href^="#"]', function(event) {
+        // Click events are captured before hashchanges. Timeout
+        // causes offsetAnchor to be called after the page jump.
+        window.setTimeout(function() {
+            offsetAnchor();
+        }, 0);
+    });
+
+    // Set the offset when entering page with hash present in the url
+    window.setTimeout(offsetAnchor, 0);
+
+    // Media Nav
+    if (window.location.href.includes("media")) {
+        var globalPage = 1;
+        var maxPage = $("[id^=page]").length;
+
+        $(document).ready(function() {
+            showPage(1);
+        });
+
+        window.showPage = function(page) {
+            $('.videos .mediaitem:not(#page' + page + ')').hide();
+            $('.videos .mediaitem#page' + page).show();
+            globalPage = page;
+            //console.log("SHOW PAGE "+page);
+        }
+
+        $(document).on('click', '.media-pagination.prev', function() {
+            if (0 >= globalPage - 1) {
+                globalPage = 1;
+            } else {
+                globalPage--;
+            }
+            showPage(globalPage);
+        });
+
+        $(document).on('click', '.media-pagination.next', function() {
+            if (globalPage + 1 > maxPage) {
+                globalPage = 1;
+            } else {
+                globalPage++;
+            }
+            showPage(globalPage);
+        });
+
+        function prevPage() {
+            if (page == 1) {
+                page = $('.pagination .mediaitem').length;
+            } else {
+                page--;
+            }
+            showPage(page);
+        }
+
+        function nextPage() {
+            if (page == $('.pagination .mediaitem').length) {
+                page = 1;
+            } else {
+                page++;
+            }
+            showPage(page);
+        }
+    }
+
+    if (window.location.href.includes("privacy") || window.location.href.includes("terms") || window.location.href.includes("agree") || window.location.href.includes("team") || window.location.href.includes("download")) {
+        $("body").addClass("inner");
+    }
+
+    //Map Page
+    if (window.location.href.includes("map")) {
+        $(".social_block").hide();
+
+        var mapExp = false;
+
+        $(document).on('click', '.burger', function() {
+            if (!mapExp) {
+                $('.map-sidebar').css('top', '85px');
+                $('.map-sidebar').css('height', 'calc(100% - 238px)');
+                mapExp = true;
+            } else {
+                $('.map-sidebar').css('top', '141px');
+                $('.map-sidebar').css('height', 'calc(100% - 294px)');
+                mapExp = false;
+            }
+        });
+    }
+
+    $( window ).on("load", function() {
+        $( ".wiki > div > div.content-box.content-styled > ul.tabs.tabs-nospace.small.margin-supersmall-top > li > span").on( "click", function() {
+            $(".wiki > div > div.content-box.content-styled > ul.tabs.tabs-nospace.small.margin-supersmall-top > li > span").removeClass("active");
+            $(this).addClass("active");
+            $(".wiki > div > div.content-box.content-styled > div > table").removeClass("active");
+            $("#" + $(this).attr("rel")).addClass("active");
+        });
+        
+        $( ".wiki > div > div.content-box.content-styled > ul.class-race-tabs > li > a").on( "click", function() {
+            event.preventDefault();
+            $(".wiki > div > div.content-box.content-styled > ul.class-race-tabs > li > a").removeClass("active");
+            $(this).addClass("active");
+            $(".wiki > div > div.content-box.content-styled > div > table").removeClass("active");
+            $(".wiki > div > div.content-box.content-styled > div").removeClass("active");
+            $("#" + $(this).attr("rel")).addClass("active");
+            history.pushState(null, '', '/wiki/quests-by-category/{{$category}}/'+$(this).attr("rel").split('_')[1]);
+            $("#classtitle").attr("data-trn-key", $(this).attr("rel").split('_')[1]);
+            $(this).translate();
+            return false;
+        });
+    });
+
+    if (navigator.userAgent.indexOf("Innadril") !== -1){
+        document.documentElement.setAttribute('data-useragent',  'Innadril');
+    }
+    // Lyrei - Countdown
+    /*var gO = moment.utc("2021-03-22 18:00", ["YYYY-MM-DD HH:mm"]);
+    $('#modalcontent').countdown(gO.toDate(), function(event) {
+        var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+        $(this).html(event.strftime(totalHours + ' hr %M min %S sec')).on('finish.countdown', function(event) {
+            $(this).html('<span>Stage 2 LIVE</span>!')
+        });
+    });*/
+});

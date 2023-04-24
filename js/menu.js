@@ -1,0 +1,2 @@
+var isActive=false;$('.js-menu').on('click',function(){if(isActive){$(this).removeClass('active');$('body').removeClass('menu-open');$('nav').removeClass('menuopen');$('nav').addClass('menuhide');$('span.js-menu').addClass('active');$('span.js-menu').removeClass('active');}else{$(this).addClass('active');$('body').addClass('menu-open');$('nav').removeClass('menuhide');$('nav').addClass('menuopen');$('span.js-menu').removeClass('active');$('span.js-menu').addClass('active');}
+isActive=!isActive;});
