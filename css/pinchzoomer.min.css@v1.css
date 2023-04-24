@@ -1,0 +1,91 @@
+.marker,
+.zoomHolder img {
+    display: block;
+}
+.fullscreenToggle,
+.zoomIn,
+.zoomOut {
+    width: 45px;
+    height: 45px;
+    overflow: hidden;
+    position: relative;
+    display: block;
+    cursor: pointer;
+    z-index: 100;
+}
+.controlHolder {
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    right: 40px;
+    bottom: 175px;
+    z-index: 100;
+}
+.zoomIn {
+    background: url('../map/ic_more.svg') center no-repeat;
+    border-radius: 6px 6px 0 0;
+}
+.zoomOut {
+    background: url('../map/ic_minus.svg') center no-repeat;
+    border-radius: 0 0 6px 6px;
+}
+.fullscreenToggle {
+    background-position: -60px 0;
+    cursor: pointer;
+    display: none !important;
+}
+.zoomIn.on,
+.zoomOut.on {
+    opacity: 1;
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.25);
+}
+.zoomIn.off,
+.zoomOut.off {
+    opacity: 0.5;
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    cursor: auto;
+}
+.fullscreenDiv,
+.marker {
+    left: 0;
+    top: 0;
+}
+.fullscreenToggle.on {
+    background-position: -90px 0;
+}
+.fullscreenToggle.off {
+    background-position: -60px 0;
+}
+.fullscreenDiv {
+    width: auto !important;
+    height: auto !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    position: absolute !important;
+    background: #fff;
+    z-index: 999999;
+    overflow: hidden;
+    touch-action: none;
+}
+.zoomHolder {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+}
+.marker {
+    position: absolute !important;
+    bottom: auto !important;
+    right: auto !important;
+    cursor: pointer;
+}
+.zoomHolder {
+    -webkit-tap-highlight-color: transparent;
+}
+.fullscreenDiv * {
+    touch-action: none;
+}
