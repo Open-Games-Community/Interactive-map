@@ -1,0 +1,583 @@
+<html lang="en">
+<head>
+
+<link rel="stylesheet" href="css/style.css@v1.css">
+<link rel="stylesheet" href="css/animation.css">
+<link rel="stylesheet" href="css/adaptation.css">
+<link rel="stylesheet" href="css/otherpages.css@v1.css">
+<title>Interactive Real Map</title>
+<meta property="og:title" content="Interactive Real Map by Alex">
+<meta property="og:site_name" content="Interactive Real Map by Alex">
+<meta property="og:type" content="website">
+<meta property="og:description" content="Interactive Real Map by Alex.">
+<meta name="description" content="Interactive Real Map by Alex.">
+<meta name="keywords" content="mmoweb, mmorpg, tibia, Hellgrave, open games community, opengamescommunity, tibia, custom, rpg, map, true experience, quest, daily quest, daily dungeon, arena system, mining, alchemist, raids, leveling, power, gold.">
+<meta charset="utf-8">
+<link rel="stylesheet" 
+   href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" 
+   integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" 
+   crossorigin="anonymous">
+<link rel="shortcut icon" href="map/h2-slider-img-2.png" >
+</head>
+<body>
+<div class="site">
+<div id="header" class="f-b">
+<div class="header_leftside f-s">
+<button class="js-menu menu" type="button">
+<span class="bar"></span>
+<span class="bar"></span>
+<span class="bar"></span>
+</button>
+<nav class="menuhide">
+<div class="navigate_bg">
+<span class="navigate_close js-menu"></span>
+<div class="navigate_l">
+<div class="navigate_content">
+	<div class="menu_items">
+		<a href="wiki.php" class="menu_item">
+		<div class="menu_item_desc">Explore</div>
+		<div class="menu_item_title">The Wiki</div>
+		</a>
+
+</div>
+</div>
+</div>
+</div>
+</nav>
+
+<div class="logotype">
+	<a href="home.php"><img src="map/h2-slider-img-2.png" alt="" width="60px"></a>
+	</div>
+	
+	<div class="online">
+	<div class="online_container f-c">
+	<span class="server_on"></span>
+	Online:<span class="server_players"><a href="onlinelist.php"> 0</a><span>
+	</span>
+	</div>
+	</div>
+	</div>
+
+
+
+
+
+
+ 
+
+ 
+</div></div>
+</div> 
+<link rel="stylesheet" href="css/map.css@v1.css">
+<link rel="stylesheet" href="css/pinchzoomer.min.css@v1.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="js/map/jquery.translate.js@v5"></script>
+<script type="text/javascript" src="js/map/functions.js@v6"></script>
+<script type="text/javascript" src="js/map/map.js"></script>
+<script src="js/map/hammer.min.js" type="text/javascript"></script>
+<script src="js/map/TweenMax.min.js" type="text/javascript"></script>
+<script src="js/map/jquery.pinchzoomer.min.js" type="text/javascript"></script>
+<div class="npclist"></div>
+
+<ul class="map-stages">
+<li data-stage="1">Stage 1</li>
+<li data-stage="2">Stage 2</li>
+<li data-stage="3">Stage 3</li>
+<li data-stage="4">Stage 4</li>
+<li data-stage="5">Merge</li>
+</ul>
+<div class="map-closepage"></div>
+<section class="map">
+<div class="map-sidebar">
+<div class="map-sidebar-border">
+<div class="map-sidebar-border-img"></div>
+</div>
+<div class="map-sidebar-border-bot"></div>
+<div class="close-sidebar"></div>
+<div class="map-sidebar-image"></div>
+<div class="map-sidebar-content">
+<div class="map-sidebar-location-title">Location</div>
+<div class="map-sidebar-location-name">Location Name</div>
+<div class="map-sidebar-text">
+This is a Spawn location.
+</div>
+</div>
+</div>
+<div class="map-content">
+<div data-elem="pinchzoomer" class="map-background" data-options="scaleMode: smart; preloaderUrl:map/h2-slider-img-2.png; adjustHeight: -100;">
+<img class="map-bg" data-src="map/hellgrave_minimap.jpg" alt=" " />
+
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top:100px; left: 3500px; z-index: 3;" data-id="2" id="obj-2">
+<img src="map/mistfall.png" style="width:250px"/>
+<p style="font-size:65px">Mistfall</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1020px; left: 3320px; z-index: 3;" data-id="3" id="obj-3">
+<img src="map/mordragor.png" style="width:250px"/>
+<p style="font-size:65px">Mordragor</p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="4" data-options="preserveScale: false;" style="top: 3188px; left: 3950px; z-index: 4;" data-id="5" id="obj-5">
+<img src="map/freewind_castle.png" style="width:250px" />
+<p style="font-size:65px">Freewind</p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="4" data-options="preserveScale: false;" style="top: 2888px; left: 4480px; z-index: 4;" data-id="5" id="obj-5">
+<img src="map/barbarian.png" style="width:120px" />
+<p style="font-size:25px">Barbarian Camp</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="4" data-options="preserveScale: false;" style="top: 2708px; left: 3790px; z-index: 4;" data-id="5" id="obj-5">
+<img src="map/frostdragon.png" style="width:250px" />
+<p style="font-size:25px">Frost Dragon Lands</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="4" data-options="preserveScale: false;" style="top: 2708px; left: 2990px; z-index: 4;" data-id="5" id="obj-5">
+<img src="map/frostdragon.png" style="width:250px" />
+<p style="font-size:25px">Frost Dragon Lands</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="4" data-options="preserveScale: false;" style="top: 2708px; left: 3330px; z-index: 4;" data-id="5" id="obj-5">
+<img src="map/ice_witch.gif" style="width:80px" />
+<p style="font-size:25px"></p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1580px; left: 1769px; z-index: 3;" data-id="7" id="obj-7">
+<img src="map/dolwatha.png" style="width:250px" />
+<p style="font-size:65px">Dolwatha</p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2100px; left: 2755px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/falanaar.png" style="width:250px"  />
+<p style="font-size:65px">Falanaar</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2600px; left: 1905px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/asura.png" style="width:250px"  />
+<p style="font-size:65px">Asura Palace</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2400px; left: 2085px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/ferumbras.gif" style="width:120px"  />
+<p style="font-size:40px">Ferumbras Tower</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2460px; left: 2405px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/elder.png" style="width:120px"  />
+<p style="font-size:40px">Elder Lands</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2400px; left: 1745px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/sea_serpent.gif" style="width:120px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2320px; left: 1865px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/depth_hell.png" style="width:120px"  />
+<p style="font-size:40px">Depth Hell</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2385px; left: 2265px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/manticore.gif" style="width:50px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2385px; left: 2295px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/feral_sphinx.gif" style="width:50px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2385px; left: 2325px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/adult_goanna.gif" style="width:50px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2300px; left: 2125px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/behe_mountain.png" style="width:50px"  />
+<p style="font-size:40px">Behemoth Mountain</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2150px; left: 2425px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/mutated.png" style="width:50px"  />
+<p style="font-size:25px">Mutated Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1750px; left: 2625px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/apes.png" style="width:170px"  />
+<p style="font-size:25px">Apes Land</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1700px; left: 2425px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/quara.png" style="width:130px"  />
+<p style="font-size:25px">Quara Tower</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1450px; left: 2595px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/deeplings.png" style="width:130px"  />
+<p style="font-size:25px">Deeplings Land</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1850px; left: 2335px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/zaoan.png" style="width:100px"  />
+<p style="font-size:25px">Zaoan Quest</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2240px; left: 2155px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Lizard_Chosen.gif" style="width:60px"  />
+<p style="font-size:25px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1890px; left: 2035px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/fungus.png" style="width:90px"  />
+<p style="font-size:25px">Fungus Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1770px; left: 2185px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/necro.png" style="width:65px"  />
+<p style="font-size:25px">Necro Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1500px; left: 2345px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/grim.png" style="width:65px"  />
+<p style="font-size:25px">Grim Reaper Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1370px; left: 2005px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/grave.png" style="width:65px"  />
+<p style="font-size:25px">Gravedigger Passage</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1295px; left: 2085px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/djinn.png" style="width:65px"  />
+<p style="font-size:25px">Djinn Fortress</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1308px; left: 18889px; z-index: 3;" data-id="9" id="obj-9">
+<p style="font-size:25px">Orc Lands</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1208px; left: 1450px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/cyclop_fortress.png" style="width:120px"  />
+<p style="font-size:25px">Cyclop Fortress</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1408px; left: 1700px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/scarab.png" style="width:80px"  />
+<p style="font-size:25px">Scarab Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1458px; left: 1360px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/pharaos.png" style="width:80px"  />
+<p style="font-size:25px">Tomb of Pharaos</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1658px; left: 1400px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/dangerous.png" style="width:80px"  />
+<p style="font-size:25px">Dangerous Passage</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1548px; left: 1380px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/morgaroth.png" style="width:110px"  />
+<p style="font-size:25px">Death Passage</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2098px; left: 1410px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/dragon_lair.png" style="width:90px"  />
+<p style="font-size:25px">Dragon Lair</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1878px; left: 1410px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/lava_golem_quest.png" style="width:70px"  />
+<p style="font-size:25px">Lava Golem Quest</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1968px; left: 1530px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/demon.png" style="width:70px"  />
+<p style="font-size:25px">Demon Cave</p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 750px; left: 4450px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/goshnars.png" style="width:200px"  />
+<p style="font-size:50px">Goshnar Entrance</p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1200px; left: 4500px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Gazharagoth.png" style="width:150px"  />
+<p style="font-size:50px">Ghazharagoth</p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 800px; left: 3850px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/cyclops.png" style="width:80px"  />
+<p style="font-size:65px"></p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 800px; left: 3915px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/cyclops_drone.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 725px; left: 4175px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Hellspawn.gif" style="width:45px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 725px; left: 4175px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/nightmare.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 725px; left: 4225px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/plaguesmith.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 725px; left: 4255px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Ushuriel.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 780px; left: 4975px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/terrorsleep.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 980px; left: 4785px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/choking_fear.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 980px; left: 4875px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/retching_horror.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 980px; left: 4475px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/guilt.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1400px; left: 4645px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/guzzlemaw.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1400px; left: 5015px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/mawhawk_raid.png" style="width:80px"  />
+<p style="font-size:40px">Mawhawk</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1400px; left: 4785px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Frazzlemaw.png" style="width:60px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1400px; left: 4845px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/silencer.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1360px; left: 3775px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/dragon.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1305px; left: 3435px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/elyotrope.png" style="width:80px"  />
+<p style="font-size:25px">Npc Elyotrope</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1375px; left: 3435px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/warlock.png" style="width:80px"  />
+<p style="font-size:25px">Warlock Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1525px; left: 3495px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/mages_quest.png" style="width:80px"  />
+<p style="font-size:25px">Mages Quest</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1725px; left: 3325px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/vampire.png" style="width:80px"  />
+<p style="font-size:25px">Vampire Lands</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1375px; left: 3105px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/anihilator.png" style="width:150px"  />
+<p style="font-size:50px">Anihilator</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1125px; left: 2875px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/trinity.png" style="width:150px"  />
+<p style="font-size:50px">Trinity Island</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 355px; left: 3655px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/dwarf.png" style="width:80px"  />
+<p style="font-size:25px">Dwarf Caves</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 155px; left: 3755px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/dwarf.png" style="width:80px"  />
+<p style="font-size:25px">Dwarf Caves</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 165px; left: 3955px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/behemoth.png" style="width:80px"  />
+<p style="font-size:25px">Behemoth Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 105px; left: 4265px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/death_passage.png" style="width:70px"  />
+<p style="font-size:25px">Entrance Fear Feaster</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 320px; left: 4345px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/death_passage.png" style="width:60px"  />
+<p style="font-size:25px">Entrance King Zelos</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 285px; left: 4045px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/massive_earth_elemental.gif" style="width:80px"  />
+<p style="font-size:25px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 285px; left: 4145px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Cyclops.png" style="width:80px"  />
+<p style="font-size:25px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 235px; left: 4195px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Cyclops_Smith.gif" style="width:80px"  />
+<p style="font-size:25px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 315px; left: 4265px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/hellcave.png" style="width:120px"  />
+<p style="font-size:25px">Hell Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 865px; left: 5645px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/cloak_of_terror.gif" style="width:80px"  />
+<p style="font-size:25px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1715px; left: 4425px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/roshamuul.png" style="width:80px"  />
+<p style="font-size:25px">Roshamuul</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 815px; left: 5645px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Courage_Leech.gif" style="width:80px"  />
+<p style="font-size:25px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 455px; left: 3425px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/minotaur.png" style="width:80px"  />
+<p style="font-size:25px">Minotaur Lands</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1295px; left: 3570px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/tamoril.png" style="width:80px"  />
+<p style="font-size:25px">Npc Tamoril</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1420px; left: 3785px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/dragon_lord.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1400px; left: 3835px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/dragon_quest.png" style="width:80px"  />
+<p style="font-size:40px">Dragon Quest</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2600px; left: 3345px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/dragon_ice.png" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 2580px; left: 3805px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/hellmines.png" style="width:80px"  />
+<p style="font-size:40px">Hell Mines</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1290px; left: 4005px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/wyvern.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1120px; left: 3965px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/wyvern.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1140px; left: 3875px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/wyvern.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1420px; left: 4025px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Giant_Spider.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1480px; left: 4045px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Exotic_Cave_Spider.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1510px; left: 3950px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/Arachnophobica.gif" style="width:80px"  />
+<p style="font-size:40px"></p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 785px; left: 4025px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/cave.png" style="width:50px"  />
+<p style="font-size:40px">Nightmare Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 485px; left: 3825px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/outpost.png" style="width:35px"  />
+<p style="font-size:25px">Twisted Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 950px; left: 3685px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/insectoid.png" style="width:35px"  />
+<p style="font-size:25px">Insectoid Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1115px; left: 3675px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/golem_cave.png" style="width:35px"  />
+<p style="font-size:25px">Golem Cave</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1135px; left: 875px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/rascacoon.png" style="width:160px"  />
+<p style="font-size:25px">Rascacoon</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1460px; left: 1155px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/tentuglys_boss.png" style="width:60px"  />
+<p style="font-size:25px">Tentuglys Boss</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1060px; left: 1710px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/falcon_bastion.png" style="width:150px"  />
+<p style="font-size:25px">Falcon Bastion</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1160px; left: 2420px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/cobra_bastion.png" style="width:150px"  />
+<p style="font-size:25px">Cobra Bastion</p>
+</span>
+<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top: 1050px; left: 1390px; z-index: 3;" data-id="9" id="obj-9">
+<img src="map/passage_rascacoon.png" style="width:120px"  />
+<p style="font-size:25px">Passage Rascacoon</p>
+</span>
+
+</div>
+</div>
+</section>
+</div>
+
+
+
+
+
+
+
+
+<footer id="footer">
+<div class="footer_container f-c">
+<div class="footer_social">
+<h3>Follow us</h3>
+ &emsp;
+<a href="https://discord.gg/9zTvcCcD4K" target="_blank" >
+<font color="black"><i class='fab fa-discord'></i></font>
+</a> &emsp;
+<a href="https://www.facebook.com/" target="_blank" class="footer_social_icon">
+<font color="black"><i class='fab fa-facebook-f'></i></font>
+</a>
+ &emsp;
+<a href="https://www.youtube.com/channel/UCagfpgiqEvSwH0p3nVyuZ8Q" target="_blank" class="footer_social_icon">
+<font color="black"><i class='fab fa-youtube'></i></font>
+</a>
+<br></br>
+</div>
+<div class="footer_description">
+<div class="description__copy">
+<img src="map/h2-slider-img-2.png" style="width:60px">
+Copyright &copy; 2022.<br>Web design by <a href="https://openagamescommunity.com">Open Games Community</a>, <a href="https://lepiigortv.com">Alex</a>. All Rights Reserved. </div>
+ <div class="description__links f-c">
+<a href="register.php">Register</a>
+<a href="index.php">Information</a>
+<a href="login_1.php">Login</a>
+<a href="buypoints.php">Donation</a>
+</div>
+</div>
+<div class="footer_social sharess">
+<h3>Share</h3>
+<div class="footer_social_container f-c">
+
+<a href="#" class="footer_social_icon" data-type="fb">
+<font color="black"><i class='fab fa-facebook-f'></i></font>
+</a> &emsp;
+<a href="#" class="footer_social_icon" data-type="whatsapp">
+<font color="black"><i class='fab fa-whatsapp'></i></font>
+</a> &emsp;
+<a href="#" class="footer_social_icon" data-type="email">
+<font color="black"><i class="fa fa-envelope" aria-hidden="true"></i></font>
+</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script src="js/jsshare.js" type="text/javascript"></script>
+<script>
+	
+	document.addEventListener("DOMContentLoaded", function(event) {
+		var shareItems = document.querySelectorAll('.sharess a');
+		var isIOS = /iPad|iPhone|iPod/.test(navigator.platform)
+				|| (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+		var isAndroid = /(android)/i.test(navigator.userAgent);
+		var options = {};
+		if (isIOS || isAndroid) {
+			options.link_telegram = 'tg://msg';
+			options.link_whatsapp = 'whatsapp://send';
+		}
+		for (var i = 0; i < shareItems.length; i += 1) {
+			shareItems[i].addEventListener('click', function share(e) {
+				e.preventDefault();
+				return JSShare.go(this, options);
+			});
+		}
+	});
+	
+</script> 
+</div>
+
+<script src="js/jquery3.6min.js" type="text/javascript"></script>
+<script src="js/slick-slider/slick1.6.js"></script>
+<script src="js/slick-slider/slider_settings.js"></script>
+<script src="js/language.js"></script>
+<script src="js/menu.js"></script>
+</body>
+</html>
