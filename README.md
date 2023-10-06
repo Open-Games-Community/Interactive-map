@@ -2,8 +2,6 @@
 Interactive Map to add on your Website for all servers.
 Writted in JS & CSS.
 
-Forum Thread: https://opengamescommunity.com/index.php?resources/mapa-interactivo.761/
-
 To start add spawn location enter on `js/map/map.js` add lines following the examples for the custom map.
 To add points on map enter on `real_map.html` edit it with notepad add the following code:
 `<span class="obj marker" data-elem="marker" data-stage="1" data-options="preserveScale: false;" style="top:100px; left: 3500px; z-index: 3;" data-id="2" id="obj-2"><img src="map/mistfall.png" style="width:250px"/><p style="font-size:65px">Mistfall</p></span>`
